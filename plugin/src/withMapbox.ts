@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import {promises} from 'fs';
 import path from 'path';
-=======
-import { promises } from "fs";
-import path from "path";
->>>>>>> 7d599fe5 (Revert expo plugin)
 
 import {
   ConfigPlugin,
