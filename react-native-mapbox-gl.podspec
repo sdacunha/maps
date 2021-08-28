@@ -2,7 +2,6 @@ require 'json'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
-maplibre_version = '5.13.0-pre.1'
 default_ios_mapbox_version = '~> 5.9.0'
 rnmbgl_ios_version = $ReactNativeMapboxGLIOSVersion || ENV["REACT_NATIVE_MAPBOX_MAPBOX_IOS_VERSION"] || default_ios_mapbox_version
 if ENV.has_key?("REACT_NATIVE_MAPBOX_MAPBOX_IOS_VERSION")
@@ -33,7 +32,6 @@ def $RNMBGL._add_spm_to_target(project, target, url, requirement, product_name)
 end
 
 def $RNMBGL.post_install(installer)
-  if maplibre_version
     spm_spec = {
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
@@ -43,9 +41,6 @@ def $RNMBGL.post_install(installer)
       product_name: "Mapbox"
     }
 
-    if maplibre_version.is_a?(Hash)
-      spm_spec = maplibre_version
-    end
     project = installer.pods_project
     self._add_spm_to_target(
       project,
@@ -68,7 +63,6 @@ def $RNMBGL.post_install(installer)
         end
       end
     end
-  end
 end
 
 def $RNMBGL.pre_install(installer)
@@ -86,14 +80,11 @@ Pod::Spec.new do |s|
   s.summary		= "React Native Component for Mapbox GL"
   s.version		= package['version']
   s.authors		= { "Nick Italiano" => "ni6@njit.edu" }
-  s.homepage    	= "https://github.com/@react-native-mapbox-gl/maps#readme"
-  s.source      	= { :git => "https://github.com/@react-native-mapbox-gl/maps.git" }
+  s.homepage    	= "https://github.com/@sdacunha/maps#readme"
+  s.source      	= { :git => "https://github.com/@sdacunha/maps.git" }
   s.license     	= "MIT"
   s.platform    	= :ios, "8.0"
 
-  if !maplibre_version
-  s.dependency 'Mapbox-iOS-SDK', rnmbgl_ios_version
-  end
   s.dependency 'React-Core'
   s.dependency 'React'
 
