@@ -19,9 +19,9 @@ let pkg: {name: string; version?: string} = {
   name: '@sdacunha/maps',
 };
 try {
-  pkg = require('@react-native-mapbox-gl/maps/package.json');
+  pkg = require('@sdacunha/maps/package.json');
 } catch {
-  // empty catch block
+  // Empty catch block
 }
 
 type InstallerBlockName = 'pre' | 'post';
