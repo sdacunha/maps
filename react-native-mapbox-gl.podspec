@@ -32,16 +32,19 @@ def $RNMBGL._add_spm_to_target(project, target, url, requirement, product_name)
 end
 
 def $RNMBGL.post_install(installer)
+  if $RNMBGL_Use_SPM
     spm_spec = {
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
         kind: "exactVersion",
-        version: "5.11.0"
+        version: "5.12.0"
       },
       product_name: "Mapbox"
     }
 
-
+    if $RNMBGL_Use_SPM.is_a?(Hash)
+      spm_spec = $RNMBGL_Use_SPM
+    end
     project = installer.pods_project
     self._add_spm_to_target(
       project,
@@ -64,6 +67,7 @@ def $RNMBGL.post_install(installer)
         end
       end
     end
+  end
 end
 
 def $RNMBGL.pre_install(installer)
@@ -81,11 +85,14 @@ Pod::Spec.new do |s|
   s.summary		= "React Native Component for Mapbox GL"
   s.version		= package['version']
   s.authors		= { "Nick Italiano" => "ni6@njit.edu" }
-  s.homepage    	= "https://github.com/@sdacunha/maps#readme"
-  s.source      	= { :git => "https://github.com/@sdacunha/maps.git" }
+  s.homepage    	= "https://github.com/@react-native-mapbox-gl/maps#readme"
+  s.source      	= { :git => "https://github.com/@react-native-mapbox-gl/maps.git" }
   s.license     	= "MIT"
   s.platform    	= :ios, "8.0"
 
+  if !$RNMBGL_Use_SPM
+  s.dependency 'Mapbox-iOS-SDK', rnmbgl_ios_version
+  end
   s.dependency 'React-Core'
   s.dependency 'React'
 
