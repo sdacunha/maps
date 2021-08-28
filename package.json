@@ -1,5 +1,5 @@
 {
-  "name": "@react-native-mapbox-gl/maps",
+  "name": "@sdacunha/maps",
   "description": "A Mapbox GL react native module for creating custom maps",
   "version": "8.3.0",
   "publishConfig": {
