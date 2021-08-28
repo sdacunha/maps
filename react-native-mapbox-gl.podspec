@@ -47,7 +47,6 @@ def $RNMBGL.post_install(installer)
         kind: "exactVersion",
         version: "5.13.0-pre.1"
       },
-      target: "MetalANGLE",
       product_name: "MetalANGLE"
     }
 
