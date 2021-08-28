@@ -2,7 +2,8 @@ require 'json'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
-default_ios_mapbox_version = '~> 6.3.0'
+maplibre_version = '5.13.0-pre.1'
+default_ios_mapbox_version = '~> 5.9.0'
 rnmbgl_ios_version = $ReactNativeMapboxGLIOSVersion || ENV["REACT_NATIVE_MAPBOX_MAPBOX_IOS_VERSION"] || default_ios_mapbox_version
 if ENV.has_key?("REACT_NATIVE_MAPBOX_MAPBOX_IOS_VERSION")
   puts "REACT_NATIVE_MAPBOX_MAPBOX_IOS_VERSION env is deprecated please use `$ReactNativeMapboxGLIOSVersion = \"#{rnmbgl_ios_version}\"`"
@@ -32,7 +33,7 @@ def $RNMBGL._add_spm_to_target(project, target, url, requirement, product_name)
 end
 
 def $RNMBGL.post_install(installer)
-  if $RNMBGL_Use_SPM
+  if maplibre_version
     spm_spec = {
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
@@ -42,8 +43,8 @@ def $RNMBGL.post_install(installer)
       product_name: "Mapbox"
     }
 
-    if $RNMBGL_Use_SPM.is_a?(Hash)
-      spm_spec = $RNMBGL_Use_SPM
+    if maplibre_version.is_a?(Hash)
+      spm_spec = maplibre_version
     end
     project = installer.pods_project
     self._add_spm_to_target(
@@ -90,7 +91,7 @@ Pod::Spec.new do |s|
   s.license     	= "MIT"
   s.platform    	= :ios, "8.0"
 
-  if !$RNMBGL_Use_SPM
+  if !maplibre_version
   s.dependency 'Mapbox-iOS-SDK', rnmbgl_ios_version
   end
   s.dependency 'React-Core'
