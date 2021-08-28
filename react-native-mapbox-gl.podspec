@@ -36,7 +36,7 @@ def $RNMBGL.post_install(installer)
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
         kind: "exactVersion",
-        version: "5.13.0-pre.1"
+        version: "5.11.0"
       },
       product_name: "Mapbox"
     }
