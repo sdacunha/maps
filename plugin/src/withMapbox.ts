@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import {promises} from 'fs';
 import path from 'path';
 
@@ -35,7 +37,6 @@ type InstallerBlockName = 'pre' | 'post';
 const withCocoaPodsInstallerBlocks: ConfigPlugin = c => {
   return withDangerousMod(c, [
     'ios',
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     async config => {
       const file = path.join(config.modRequest.platformProjectRoot, 'Podfile');
 
