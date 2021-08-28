@@ -3,7 +3,8 @@
   "description": "A Mapbox GL react native module for creating custom maps",
   "version": "8.3.0",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   },
   "author": "React Native Mapbox Team",
   "main": "./javascript/index.js",
