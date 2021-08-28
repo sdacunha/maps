@@ -36,7 +36,7 @@ def $RNMBGL.post_install(installer)
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
         kind: "exactVersion",
-        version: "5.12.0"
+        version: "5.11.0"
       },
       product_name: "Mapbox"
     }
@@ -50,7 +50,7 @@ def $RNMBGL.post_install(installer)
       spm_spec[:requirement],
       spm_spec[:product_name]
     )
-    
+
     installer.aggregate_targets.group_by(&:user_project).each do |project, targets|
       targets.each do |target|
         target.user_targets.each do |user_target|
