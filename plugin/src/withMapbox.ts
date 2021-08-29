@@ -53,9 +53,9 @@ const withCocoaPodsInstallerBlocks: ConfigPlugin = (c) => {
 export function applyCocoaPodsModifications(contents: string): string {
   // Ensure installer blocks exist
   let src = addInstallerBlock(contents, "pre");
-  // src = addInstallerBlock(src, "post");
+  src = addInstallerBlock(src, "post");
   src = addMapboxInstallerBlock(src, "pre");
-  // src = addMapboxInstallerBlock(src, "post");
+  src = addMapboxInstallerBlock(src, "post");
   return src;
 }
 
