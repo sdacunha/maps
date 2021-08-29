@@ -213,4 +213,4 @@ const RCTMGLPointAnnotation = requireNativeComponent(
   },
 );
 
-export default React.memo(PointAnnotation);
+export default PointAnnotation;
