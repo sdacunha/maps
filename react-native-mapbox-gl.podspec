@@ -45,7 +45,7 @@ def $RNMBGL.post_install(installer)
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
         kind: "exactVersion",
-        version: "5.12.0"
+        version: "5.13.0-pre.1"
       },
       product_name: "MetalANGLE"
     }
