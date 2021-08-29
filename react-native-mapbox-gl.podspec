@@ -78,8 +78,6 @@ def $RNMBGL.post_install(installer)
             spm_spec[:requirement],
             spm_spec[:product_name]
           )
-        end
-        target.user_targets.each do |user_target|
           self._add_spm_to_target(
             project,
             user_target,
