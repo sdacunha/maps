@@ -115,7 +115,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'DynamicLibrary' do |sp|
     sp.source_files	= "ios/RCTMGL/**/*.{h,m}"
-    sp.compiler_flags = '-DRNMGL_USE_MAPLIBRE=1'
+    # sp.compiler_flags = '-DRNMGL_USE_MAPLIBRE=1'
   end
 
   if ENV["REACT_NATIVE_MAPBOX_GL_USE_FRAMEWORKS"]
