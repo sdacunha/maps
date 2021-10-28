@@ -1,7 +1,5 @@
 package com.mapbox.rctmgl.components.camera;
 
-import android.util.Log;
-
 import com.mapbox.geojson.FeatureCollection;
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -42,9 +40,6 @@ public class RCTMGLCameraManager extends AbstractEventEmitter<RCTMGLCamera> {
     @ReactProp(name="stop")
     public void setStop(RCTMGLCamera camera, ReadableMap map) {
         if (map != null) {
-            if (mContext != null) {
-                Log.i("(RCTMGL)", mContext.toString());
-            }
             CameraStop stop = CameraStop.fromReadableMap(mContext, map, null);
             camera.setStop(stop);
         }
@@ -53,9 +48,6 @@ public class RCTMGLCameraManager extends AbstractEventEmitter<RCTMGLCamera> {
     @ReactProp(name="defaultStop")
     public void setDefaultStop(RCTMGLCamera camera, ReadableMap map) {
         if (map != null) {
-            if (mContext != null) {
-                Log.i("(RCTMGL)", mContext.toString());
-            }
             CameraStop stop = CameraStop.fromReadableMap(mContext, map, null);
             camera.setDefaultStop(stop);
         }

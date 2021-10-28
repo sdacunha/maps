@@ -1,6 +1,5 @@
 package com.mapbox.rctmgl.components.camera;
 
-import android.util.Log;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import android.util.DisplayMetrics;
@@ -98,16 +97,13 @@ public class CameraStop {
         // mapbox native does on iOS
         double[] contentInset = mapView.getContentInset();
 
-        Log.i("(RCTMGL)", "Camera padding before " + mPaddingLeft + " , " +  mPaddingTop + " , " + mPaddingRight + " , " + mPaddingBottom);
         int paddingLeft = Double.valueOf(contentInset[0] + mPaddingLeft).intValue();
         int paddingTop = Double.valueOf(contentInset[1] + mPaddingTop).intValue();
         int paddingRight = Double.valueOf(contentInset[2] + mPaddingRight).intValue();
         int paddingBottom = Double.valueOf(contentInset[3] + mPaddingBottom).intValue();
-        Log.i("(RCTMGL)", "Camera padding after " + paddingLeft + " , " +  paddingTop + " , " + paddingRight + " , " + paddingBottom);
 
         int[] cameraPadding = {paddingLeft, paddingTop, paddingRight, paddingBottom};
         int[] cameraPaddingClipped = clippedPadding(cameraPadding, mapView);
-        Log.i("(RCTMGL)", "Camera padding clipped " + cameraPaddingClipped[0] + " , " +  cameraPaddingClipped[1] + " , " + cameraPaddingClipped[2] + " , " + cameraPaddingClipped[3]);
 
         if (mLatLng != null) {
             builder.target(mLatLng);
@@ -155,6 +151,25 @@ public class CameraStop {
             stop.setBearing(readableMap.getDouble("heading"));
         }
 
+        int paddingTop = getPaddingByKey(readableMap, "paddingTop");
+        int paddingRight = getPaddingByKey(readableMap, "paddingRight");
+        int paddingBottom = getPaddingByKey(readableMap, "paddingBottom");
+        int paddingLeft = getPaddingByKey(readableMap, "paddingLeft");
+
+        // scale padding by pixel ratio
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        paddingTop = Float.valueOf(paddingTop * metrics.scaledDensity).intValue();
+        paddingRight = Float.valueOf(paddingRight * metrics.scaledDensity).intValue();
+        paddingBottom = Float.valueOf(paddingBottom * metrics.scaledDensity).intValue();
+        paddingLeft = Float.valueOf(paddingLeft * metrics.scaledDensity).intValue();
+
+        stop.setPadding(
+                paddingLeft,
+                paddingRight,
+                paddingTop,
+                paddingBottom
+        );
+
         if (readableMap.hasKey("centerCoordinate")) {
             Point target = GeoJSONUtils.toPointGeometry(readableMap.getString("centerCoordinate"));
             stop.setLatLng(GeoJSONUtils.toLatLng(target));
@@ -189,26 +204,6 @@ public class CameraStop {
             }
         }
 
-        int paddingTop = getPaddingByKey(readableMap, "paddingTop");
-        int paddingRight = getPaddingByKey(readableMap, "paddingRight");
-        int paddingBottom = getPaddingByKey(readableMap, "paddingBottom");
-        int paddingLeft = getPaddingByKey(readableMap, "paddingLeft");
-
-        // scale padding by pixel ratio
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        paddingTop = Float.valueOf(paddingTop * metrics.scaledDensity).intValue();
-        paddingRight = Float.valueOf(paddingRight * metrics.scaledDensity).intValue();
-        paddingBottom = Float.valueOf(paddingBottom * metrics.scaledDensity).intValue();
-        paddingLeft = Float.valueOf(paddingLeft * metrics.scaledDensity).intValue();
-
-        Log.i("(RCTMGL)", "Padding set: paddingTop: " + paddingTop + ", paddingRight: " + paddingRight + ", paddingBottom: " + paddingBottom + ", paddingLeft: " + paddingLeft);
-        stop.setPadding(
-                paddingLeft,
-                paddingRight,
-                paddingTop,
-                paddingBottom
-        );
-
         stop.setCallback(callback);
         return stop;
     }
@@ -228,7 +223,6 @@ public class CameraStop {
         int resultBottom = bottom;
 
         if (top + bottom >= mapHeight) {
-            Log.i("(RCTMGL)", "Padding top + bottom getting clipped");
             double totalPadding = top + bottom;
             double extra = totalPadding - mapHeight + 1.0; // add 1 to compensate for floating point math
             resultTop -= (top * extra) / totalPadding;
@@ -236,7 +230,6 @@ public class CameraStop {
         }
 
         if (left + right >= mapWidth) {
-            Log.i("(RCTMGL)", "Padding left + right getting clipped");
             double totalPadding = left + right;
             double extra = totalPadding - mapWidth + 1.0; // add 1 to compensate for floating point math
             resultLeft -= (left * extra) / totalPadding;
