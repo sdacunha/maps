@@ -98,13 +98,16 @@ public class CameraStop {
         // mapbox native does on iOS
         double[] contentInset = mapView.getContentInset();
 
+        Log.i("(RCTMGL)", "Camera padding before " + mPaddingLeft + " , " +  mPaddingTop + " , " + mPaddingRight + " , " + mPaddingBottom);
         int paddingLeft = Double.valueOf(contentInset[0] + mPaddingLeft).intValue();
         int paddingTop = Double.valueOf(contentInset[1] + mPaddingTop).intValue();
         int paddingRight = Double.valueOf(contentInset[2] + mPaddingRight).intValue();
         int paddingBottom = Double.valueOf(contentInset[3] + mPaddingBottom).intValue();
+        Log.i("(RCTMGL)", "Camera padding after " + paddingLeft + " , " +  paddingTop + " , " + paddingRight + " , " + paddingBottom);
 
         int[] cameraPadding = {paddingLeft, paddingTop, paddingRight, paddingBottom};
         int[] cameraPaddingClipped = clippedPadding(cameraPadding, mapView);
+        Log.i("(RCTMGL)", "Camera padding clipped " + cameraPaddingClipped[0] + " , " +  cameraPaddingClipped[1] + " , " + cameraPaddingClipped[2] + " , " + cameraPaddingClipped[3]);
 
         if (mLatLng != null) {
             builder.target(mLatLng);
