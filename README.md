@@ -1,36 +1,45 @@
+<br>
+
+### 🟥 Future of this repo: participate in the [discussion thread](https://github.com/react-native-mapbox-gl/maps/discussions/1680) 🟥
+
+## Call for additional maintainers
+
+Hey you, yes _you_!  
+Do you like this repo, are you using it (are you using it for production apps?! It's cool, we do too!)?
+
+If you have some time to spare, we'd love to get your help!  
+I hear you ask "**Yes, _YES_, but How?!**" (in deafening silence),  
+well...here are some examples:
+
+- check our docs (still up to date? need some edits?)
+- review issue tickets and reply with helpful answers
+- join the Gitter chat and engage with other users
+- review PRs and comment on things you notice
+- actively help move the project forward by submitting PRs that introduce fixes and features
+
+You don't need to be a full-fledged maintainer to do those things, however,  
+if you are interested in becoming one, don't hesitate to reply in [this discussion](https://github.com/react-native-mapbox-gl/maps/discussions/1551).
+
+Thanks 🙇
+
+<br>
+
+---
+
+<br>
+
 # Mapbox Maps SDK for React Native
 
-_An unofficial React Native library for building maps with   
+_An unofficial React Native library for building maps with  
 the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) and [Mapbox Maps SDK for Android](https://www.mapbox.com/android-sdk/)_
-
 
 We also support [MapLibre](https://github.com/maplibre/maplibre-gl-native) flavors of Mapbox SDKs now 🎉
 
 ---
 
-## Call for additional maintainers  
-Hey you, yes _you_!  
-Do you like this repo, are you using it (are you using it for production apps?! It's cool, we do too!)?
-  
-If you have some time to spare, we'd love to get your help!  
-I hear you ask "**Yes, _YES_, but How?!**" (in deafening silence),  
-well...here are some examples:
-* check our docs (still up to date? need some edits?)
-* review issue tickets and reply with helpful answers
-* join the Gitter chat and engage with other users
-* review PRs and comment on things you notice
-* actively help move the project forward by submitting PRs that introduce fixes and features
-
-You don't need to be a full-fledged maintainer to do those things, however,  
-if you are interested in becoming one, don't hesitate to reply in [this discussion](https://github.com/react-native-mapbox-gl/maps/discussions/1551). 
-
-Thanks 🙇
-
----
-
 [![npm version](https://badge.fury.io/js/%40react-native-mapbox-gl%2Fmaps.svg)](https://badge.fury.io/js/%40react-native-mapbox-gl%2Fmaps)  
 [![Android Build](https://github.com/react-native-mapbox-gl/maps/actions/workflows/android-actions.yml/badge.svg)](https://github.com/react-native-mapbox-gl/maps/actions/workflows/android-actions.yml)  
-[![iOS Build](https://github.com/react-native-mapbox-gl/maps/actions/workflows/ios-actions.yml/badge.svg)](https://github.com/react-native-mapbox-gl/maps/actions/workflows/ios-actions.yml)  
+[![iOS Build](https://github.com/react-native-mapbox-gl/maps/actions/workflows/ios-actions.yml/badge.svg)](https://github.com/react-native-mapbox-gl/maps/actions/workflows/ios-actions.yml)
 
 ---
 
@@ -50,13 +59,11 @@ Thanks 🙇
 1. On Android we support from version 6 (API 23) upwards
 2. Please [Sign Up to Mapbox](https://account.mapbox.com/auth/signup/) to get the Mapbox Access Token.
 
-
 ## Dependencies
 
 - [node](https://nodejs.org)
 - [npm](https://www.npmjs.com/)
 - [React Native](https://facebook.github.io/react-native/) (0.60+)
-
 
 ## Installation
 
@@ -78,14 +85,16 @@ npm install @react-native-mapbox-gl/maps --save
 - [Expo](/plugin/install.md)
 - [Example](/example)
 
-
 ### Getting Started
+
 For more information, check out our [Getting Started](/docs/GettingStarted.md) section
 
 ## Run Project
+
 Before you run your project be sure you have completeded the Installation Guides for Android or iOS.
 
 ### Run iOS Simulator
+
 ```sh
 # Run with yarn
 yarn run ios
@@ -95,6 +104,7 @@ npm run ios
 ```
 
 ### Run Android Emulator
+
 ```sh
 # Run with yarn
 yarn run android
@@ -106,8 +116,8 @@ npm run android
 ## Adding a map
 
 ```js
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, View} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 
 MapboxGL.setAccessToken('<YOUR_ACCESSTOKEN>');
@@ -117,16 +127,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#F5FCFF',
   },
   container: {
     height: 300,
     width: 300,
-    backgroundColor: 'tomato'
+    backgroundColor: 'tomato',
   },
   map: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default class App extends Component {

@@ -7,6 +7,40 @@ PR Title ([#123](link to my pr))
 Update ShapeSource methods to make it usable with any cluster ( Use cluster itself instead of cluster_id as first argument for getClusterExpansionZoom/getClusterLeaves/getClusterChildren methods. Version < 9 methods still supports passing cluster_id as a first argument but a deprecation warning will be shown. ) ([#1499](https://github.com/react-native-mapbox-gl/maps/pull/1499))
 ```
 
+docs(example): I am an example CHANGELOG, replace me!
+
+---
+
+## 8.5.0
+
+build: update install guide and `/example` project for android dependencies ([#1640](https://github.com/react-native-mapbox-gl/maps/pull/1640))  
+build(turf): update to version 6.5.0 ([#1638](https://github.com/react-native-mapbox-gl/maps/pull/1638))  
+fix(Camera) fix `zoomTo` method and expand Fit example ([#1631](https://github.com/react-native-mapbox-gl/maps/pull/1631))  
+ci: two scripts for linting with and without fix ([#1630](https://github.com/react-native-mapbox-gl/maps/pull/1630))  
+feat(Camera) add an optional `allowUpdates` boolean prop ([#1619](https://github.com/react-native-mapbox-gl/maps/pull/1619))  
+refactor(example): remove unused modules and scripts ([#1618](https://github.com/react-native-mapbox-gl/maps/pull/1618))  
+fix(react-native): update api to get rid of EventEmitter warnings ([#1615](https://github.com/react-native-mapbox-gl/maps/pull/1615))  
+fix(Camera) persist zoom when changing from `bounds` to `centerCoordinate`, fix zero padding not causing map to update, create unified example showcasing bounds/centerCoordinate/zoom/padding ([#1614](https://github.com/react-native-mapbox-gl/maps/pull/1614))  
+Update MapLibre to 5.12.1 on iOS ([#1596](https://github.com/react-native-mapbox-gl/maps/pull/1596))  
+Update ShapeSource methods to make it usable with any cluster ( Use cluster itself instead of cluster_id as first argument for getClusterExpansionZoom/getClusterLeaves/getClusterChildren methods. Version < 9 methods still supports passing cluster_id as a first argument but a deprecation warning will be shown. ) ([#1499](https://github.com/react-native-mapbox-gl/maps/pull/1499))
+
+---
+
+## 8.4.0
+
+fix(iOS): pin mapLibre back to `5.12.0` ([#1589](https://github.com/react-native-mapbox-gl/maps/pull/1589))  
+chore: improve GH workflows ([#1588](https://github.com/react-native-mapbox-gl/maps/pull/1588))  
+build(deps): bump @expo/config-plugins from 3.1.0 to 4.0.3 ([#1585](https://github.com/react-native-mapbox-gl/maps/pull/1585))  
+chore(pre-commit): run lint on TS files, change PR template ([#1584](https://github.com/react-native-mapbox-gl/maps/pull/1584))  
+feat(example): update vertical alignment example ([#1579](https://github.com/react-native-mapbox-gl/maps/pull/1579))  
+fix incorrect anchor calculation for PointAnnotation on iOS ([#1576](https://github.com/react-native-mapbox-gl/maps/pull/1576))  
+style(eslint): align root and example with the same configuration ([#1575](https://github.com/react-native-mapbox-gl/maps/pull/1575))  
+fix(mapLibre): support version `5.12.0` upwards ([#1571](https://github.com/react-native-mapbox-gl/maps/pull/1571))  
+build: upgrade to RN `0.66` ([#1570](https://github.com/react-native-mapbox-gl/maps/pull/1570))  
+build(android): add telemetry dependency to default build setup ([#1550](https://github.com/react-native-mapbox-gl/maps/pull/1550))  
+feat(camera): Enable `padding` as a root-level prop on the camera, with `bounds.padding*` as fallbacks ([#1538](https://github.com/react-native-mapbox-gl/maps/pull/1538/files))  
+fix: revert pinned mapLibre version to `5.11.0` ([8a2b00e67ba6398f3f6e6f52e98b0f0cea437e4d](https://github.com/react-native-mapbox-gl/maps/commit/8a2b00e67ba6398f3f6e6f52e98b0f0cea437e4d))
+
 ---
 
 ## 8.4.0

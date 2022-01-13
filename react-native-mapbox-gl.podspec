@@ -36,19 +36,19 @@ def $RNMBGL.post_install(installer)
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
         kind: "exactVersion",
-        version: "5.13.0-pre.1"
+        version: "5.12.2"
       },
       product_name: "Mapbox"
     }
 
-    metal_spm_spec = {
-      url: "https://github.com/maplibre/maplibre-gl-native-distribution",
-      requirement: {
-        kind: "exactVersion",
-        version: "5.13.0-pre.1"
-      },
-      product_name: "MetalANGLE"
-    }
+    # metal_spm_spec = {
+    #   url: "https://github.com/maplibre/maplibre-gl-native-distribution",
+    #   requirement: {
+    #     kind: "exactVersion",
+    #     version: "5.13.0-pre.1"
+    #   },
+    #   product_name: "MetalANGLE"
+    # }
 
 
     project = installer.pods_project
@@ -60,13 +60,13 @@ def $RNMBGL.post_install(installer)
       spm_spec[:product_name]
     )
 
-    self._add_spm_to_target(
-      project,
-      project.targets.find { |t| t.name == "react-native-mapbox-gl"},
-      metal_spm_spec[:url],
-      metal_spm_spec[:requirement],
-      metal_spm_spec[:product_name]
-    )
+    # self._add_spm_to_target(
+    #   project,
+    #   project.targets.find { |t| t.name == "react-native-mapbox-gl"},
+    #   metal_spm_spec[:url],
+    #   metal_spm_spec[:requirement],
+    #   metal_spm_spec[:product_name]
+    # )
 
     installer.aggregate_targets.group_by(&:user_project).each do |project, targets|
       targets.each do |target|
@@ -78,13 +78,13 @@ def $RNMBGL.post_install(installer)
             spm_spec[:requirement],
             spm_spec[:product_name]
           )
-          self._add_spm_to_target(
-            project,
-            user_target,
-            metal_spm_spec[:url],
-            metal_spm_spec[:requirement],
-            metal_spm_spec[:product_name]
-          )
+          # self._add_spm_to_target(
+          #   project,
+          #   user_target,
+          #   metal_spm_spec[:url],
+          #   metal_spm_spec[:requirement],
+          #   metal_spm_spec[:product_name]
+          # )
         end
       end
     end
@@ -115,7 +115,8 @@ Pod::Spec.new do |s|
 
   s.subspec 'DynamicLibrary' do |sp|
     sp.source_files	= "ios/RCTMGL/**/*.{h,m}"
-    # sp.compiler_flags = '-DRNMGL_USE_MAPLIBRE=1'
+    sp.compiler_flags = '-DRNMGL_USE_MAPLIBRE=1'
+
   end
 
   if ENV["REACT_NATIVE_MAPBOX_GL_USE_FRAMEWORKS"]
