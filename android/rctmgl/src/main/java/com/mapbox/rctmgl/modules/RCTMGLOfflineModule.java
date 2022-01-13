@@ -54,7 +54,6 @@ public class RCTMGLOfflineModule extends ReactContextBaseJavaModule {
     public static final String OFFLINE_ERROR = "MapboxOfflineRegionError";
     public static final String OFFLINE_PROGRESS = "MapboxOfflineRegionProgress";
 
-    public static final String DEFAULT_STYLE_URL = Style.MAPBOX_STREETS;
     public static final Double DEFAULT_MIN_ZOOM_LEVEL = 10.0;
     public static final Double DEFAULT_MAX_ZOOM_LEVEL = 20.0;
 
@@ -435,7 +434,7 @@ public class RCTMGLOfflineModule extends ReactContextBaseJavaModule {
 
     private OfflineRegionDefinition makeDefinition(LatLngBounds latLngBounds, ReadableMap options) {
         return new OfflineTilePyramidRegionDefinition(
-                ConvertUtils.getString("styleURL", options, DEFAULT_STYLE_URL),
+                ConvertUtils.getString("styleURL", options, ""),
                 latLngBounds,
                 ConvertUtils.getDouble("minZoom", options, DEFAULT_MIN_ZOOM_LEVEL),
                 ConvertUtils.getDouble("maxZoom", options, DEFAULT_MAX_ZOOM_LEVEL),

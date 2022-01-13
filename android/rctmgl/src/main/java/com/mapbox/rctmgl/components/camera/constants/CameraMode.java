@@ -1,5 +1,6 @@
 package com.mapbox.rctmgl.components.camera.constants;
 
+
 import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;

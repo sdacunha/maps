@@ -1,8 +1,7 @@
 package com.mapbox.rctmgl.components.annotation;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
+import android.view.View;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 

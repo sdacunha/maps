@@ -1,5 +1,6 @@
 package com.mapbox.rctmgl.components.annotation;
 
+
 import androidx.annotation.NonNull;
 
 import com.mapbox.mapboxsdk.maps.MapView;

@@ -3,8 +3,10 @@ package com.mapbox.rctmgl.components.annotation;
 import android.content.Context;
 import android.graphics.PointF;
 import android.graphics.Bitmap;
-import android.view.View;
+import android.os.Build;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import android.view.View;
 
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -90,6 +92,7 @@ public class RCTMGLPointAnnotation extends AbstractMapFeature implements View.On
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void addToMap(RCTMGLMapView mapView) {
         mMapView = mapView;

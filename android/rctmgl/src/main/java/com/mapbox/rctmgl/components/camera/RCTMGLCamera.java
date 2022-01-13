@@ -2,6 +2,7 @@ package com.mapbox.rctmgl.components.camera;
 
 import android.content.Context;
 import android.location.Location;
+import androidx.annotation.NonNull;
 
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdate;
@@ -11,13 +12,9 @@ import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.geometry.VisibleRegion;
 import com.mapbox.mapboxsdk.location.OnCameraTrackingChangedListener;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.location.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentOptions;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-// import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.rctmgl.components.AbstractMapFeature;
 import com.mapbox.rctmgl.components.location.LocationComponentManager;
 import com.mapbox.rctmgl.components.mapview.RCTMGLMapView;
@@ -31,8 +28,6 @@ import com.mapbox.rctmgl.location.UserTrackingMode;
 import com.mapbox.rctmgl.location.UserTrackingState;
 import com.mapbox.rctmgl.utils.GeoJSONUtils;
 
-import com.mapbox.rctmgl.R;
-
 import com.mapbox.rctmgl.events.constants.EventTypes;
 
 import com.facebook.react.bridge.WritableMap;
@@ -40,9 +35,6 @@ import com.facebook.react.bridge.WritableNativeMap;
 
 import com.mapbox.geojson.Point;
 
-import com.mapbox.android.core.permissions.PermissionsManager;
-
-import androidx.annotation.NonNull;
 
 public class RCTMGLCamera extends AbstractMapFeature {
     private RCTMGLCameraManager mManager;

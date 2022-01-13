@@ -7,10 +7,8 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.google.gson.JsonArray;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.TransitionOptions;
-import com.mapbox.rctmgl.utils.ConvertUtils;
 import com.mapbox.rctmgl.utils.ExpressionParser;
 import com.mapbox.rctmgl.utils.ImageEntry;
 

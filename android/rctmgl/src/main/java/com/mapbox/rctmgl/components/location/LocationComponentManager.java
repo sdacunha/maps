@@ -2,6 +2,7 @@ package com.mapbox.rctmgl.components.location;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import androidx.annotation.NonNull;
 
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -14,8 +15,6 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.rctmgl.R;
 import com.mapbox.rctmgl.components.mapview.RCTMGLMapView;
 import com.mapbox.rctmgl.location.LocationManager;
-
-import androidx.annotation.NonNull;
 
 /**
  * The LocationComponent on android implements both location tracking and display of user's current location.

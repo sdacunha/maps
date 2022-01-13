@@ -7,9 +7,9 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.location.Location;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.UiThread;
 
+
+import androidx.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.view.Gravity;
@@ -53,7 +53,6 @@ import com.mapbox.rctmgl.R;
 import com.mapbox.rctmgl.components.AbstractMapFeature;
 import com.mapbox.rctmgl.components.annotation.RCTMGLPointAnnotation;
 import com.mapbox.rctmgl.components.annotation.RCTMGLMarkerView;
-import com.mapbox.rctmgl.components.annotation.MarkerView;
 import com.mapbox.rctmgl.components.annotation.MarkerViewManager;
 import com.mapbox.rctmgl.components.camera.RCTMGLCamera;
 import com.mapbox.rctmgl.components.images.RCTMGLImages;
@@ -508,9 +507,11 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
         symbolManager = new SymbolManager(this, mMap, style);
         symbolManager.setIconAllowOverlap(true);
         symbolManager.addClickListener(new OnSymbolClickListener() {
+
             @Override
-            public void onAnnotationClick(Symbol symbol) {
+            public boolean onAnnotationClick(Symbol symbol) {
                 onMarkerClick(symbol);
+                return true;
             }
         });
         symbolManager.addDragListener(new OnSymbolDragListener() {

@@ -1,9 +1,9 @@
 package com.mapbox.rctmgl.components.styles.sources;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 
 import android.graphics.PointF;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.facebook.react.bridge.ReadableMap;

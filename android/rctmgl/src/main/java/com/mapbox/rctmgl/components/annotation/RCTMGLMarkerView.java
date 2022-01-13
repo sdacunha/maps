@@ -2,9 +2,8 @@ package com.mapbox.rctmgl.components.annotation;
 
 import android.content.Context;
 import android.graphics.PointF;
-import android.view.View;
-
 import androidx.annotation.NonNull;
+import android.view.View;
 
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
