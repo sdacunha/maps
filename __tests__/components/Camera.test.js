@@ -4,6 +4,7 @@ import {render} from '@testing-library/react-native';
 import Camera from '../../javascript/components/Camera';
 
 const cameraWithoutFollowDefault = {
+  ...Camera.defaultProps,
   animationDuration: 2000,
   animationMode: 'easeTo',
   centerCoordinate: [-111.8678, 40.2866],
@@ -14,6 +15,7 @@ const cameraWithoutFollowDefault = {
 };
 
 const cameraWithoutFollowChanged = {
+  ...Camera.defaultProps,
   animationDuration: 1000,
   animationMode: 'easeTo',
   centerCoordinate: [-110.8678, 37.2866],
@@ -24,6 +26,7 @@ const cameraWithoutFollowChanged = {
 };
 
 const cameraWithFollowCourse = {
+  ...Camera.defaultProps,
   animationDuration: 2000,
   animationMode: 'easeTo',
   defaultSettings: {
@@ -36,6 +39,7 @@ const cameraWithFollowCourse = {
 };
 
 const cameraWithBounds = {
+  ...Camera.defaultProps,
   animationDuration: 2000,
   animationMode: 'easeTo',
   bounds: {
@@ -318,40 +322,34 @@ describe('Camera', () => {
       test('returns false when centerCoordinates have not changed', () => {
         expect(
           camera._hasCenterCoordinateChanged(
-            {centerCoordinate: [-111.8678, 40.2866]},
-            {centerCoordinate: [-111.8678, 40.2866]},
+            [-111.8678, 40.2866],
+            [-111.8678, 40.2866],
           ),
         ).toBe(false);
       });
 
       test('returns true when centerCoordinates have changed', () => {
         expect(
-          camera._hasCenterCoordinateChanged(
-            {centerCoordinate: [-111.8678, 40.2866]},
-            {},
-          ),
+          camera._hasCenterCoordinateChanged([-111.8678, 40.2866], undefined),
         ).toBe(true);
 
         expect(
-          camera._hasCenterCoordinateChanged(
-            {},
-            {centerCoordinate: [-111.8678, 40.2866]},
-          ),
+          camera._hasCenterCoordinateChanged(undefined, [-111.8678, 40.2866]),
         ).toBe(true);
 
         // isLngDiff
         expect(
           camera._hasCenterCoordinateChanged(
-            {centerCoordinate: [-111.2678, 40.2866]},
-            {centerCoordinate: [-111.8678, 40.2866]},
+            [-111.2678, 40.2866],
+            [-111.8678, 40.2866],
           ),
         ).toBe(true);
 
         // isLatDiff
         expect(
           camera._hasCenterCoordinateChanged(
-            {centerCoordinate: [-111.2678, 40.2866]},
-            {centerCoordinate: [-111.8678, 33.2866]},
+            [-111.2678, 40.2866],
+            [-111.8678, 33.2866],
           ),
         ).toBe(true);
       });

@@ -85,13 +85,19 @@ public class CameraStop {
         CameraPosition currentCamera = map.getCameraPosition();
         CameraPosition.Builder builder = new CameraPosition.Builder(currentCamera);
 
-        if (mBearing != null) {
-            builder.bearing(mBearing);
-        }
+        // Adding map padding to the camera padding which is the same behavior as
+        // mapbox native does on iOS
+        double[] contentInset = mapView.getContentInset();
 
-        if (mTilt != null) {
-            builder.tilt(mTilt);
-        }
+        int paddingLeft = Double.valueOf(contentInset[0] + mPaddingLeft).intValue();
+        int paddingTop = Double.valueOf(contentInset[1] + mPaddingTop).intValue();
+        int paddingRight = Double.valueOf(contentInset[2] + mPaddingRight).intValue();
+        int paddingBottom = Double.valueOf(contentInset[3] + mPaddingBottom).intValue();
+
+        int[] cameraPadding = {paddingLeft, paddingTop, paddingRight, paddingBottom};
+        int[] cameraPaddingClipped = clippedPadding(cameraPadding, mapView);
+
+        boolean hasSetZoom = false;
 
         // Adding map padding to the camera padding which is the same behavior as
         // mapbox native does on iOS
@@ -113,9 +119,6 @@ public class CameraStop {
                 cameraPaddingClipped[2],
                 cameraPaddingClipped[3]
             );
-            if (mZoom != null) {
-                builder.zoom(mZoom);
-            }
         } else if (mBounds != null) {
             double tilt = mTilt != null ? mTilt : currentCamera.tilt;
             double bearing = mBearing != null ? mBearing : currentCamera.bearing;
@@ -135,6 +138,19 @@ public class CameraStop {
                 );
                 return new CameraUpdateItem(map, update, mDuration, mCallback, mMode);
             }
+            hasSetZoom = true;
+        }
+
+        if (mBearing != null) {
+            builder.bearing(mBearing);
+        }
+
+        if (mTilt != null) {
+            builder.tilt(mTilt);
+        }
+
+        if (mZoom != null && !hasSetZoom) {
+            builder.zoom(mZoom);
         }
 
         return new CameraUpdateItem(map, CameraUpdateFactory.newCameraPosition(builder.build()), mDuration, mCallback, mMode);
