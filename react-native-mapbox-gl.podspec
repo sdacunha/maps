@@ -41,15 +41,6 @@ def $RNMBGL.post_install(installer)
       product_name: "Mapbox"
     }
 
-    # metal_spm_spec = {
-    #   url: "https://github.com/maplibre/maplibre-gl-native-distribution",
-    #   requirement: {
-    #     kind: "exactVersion",
-    #     version: "5.13.0-pre.1"
-    #   },
-    #   product_name: "MetalANGLE"
-    # }
-
 
     project = installer.pods_project
     self._add_spm_to_target(
@@ -60,13 +51,6 @@ def $RNMBGL.post_install(installer)
       spm_spec[:product_name]
     )
 
-    # self._add_spm_to_target(
-    #   project,
-    #   project.targets.find { |t| t.name == "react-native-mapbox-gl"},
-    #   metal_spm_spec[:url],
-    #   metal_spm_spec[:requirement],
-    #   metal_spm_spec[:product_name]
-    # )
 
     installer.aggregate_targets.group_by(&:user_project).each do |project, targets|
       targets.each do |target|
@@ -78,13 +62,6 @@ def $RNMBGL.post_install(installer)
             spm_spec[:requirement],
             spm_spec[:product_name]
           )
-          # self._add_spm_to_target(
-          #   project,
-          #   user_target,
-          #   metal_spm_spec[:url],
-          #   metal_spm_spec[:requirement],
-          #   metal_spm_spec[:product_name]
-          # )
         end
       end
     end

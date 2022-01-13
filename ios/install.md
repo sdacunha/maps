@@ -84,13 +84,12 @@ $RNMBGL_Use_SPM = {
   url: "https://github.com/maplibre/maplibre-gl-native-distribution",
   requirement: {
     kind: "upToNextMajorVersion",
-    minimumVersion: "5.12.0"
+    minimumVersion: "5.12.2"
   },
   product_name: "Mapbox"
 }
 $RNMGL_USE_MAPLIBRE = true
 ```
-
 
 <br>
 
