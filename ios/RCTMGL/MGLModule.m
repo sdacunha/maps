@@ -13,6 +13,7 @@
 #import "RCTMGLSource.h"
 #import "MGLCustomHeaders.h"
 #import <Mapbox/Mapbox.h>
+#import <Mapbox/MGLDefaultStyle.h>
 
 @implementation MGLModule
 
