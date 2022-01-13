@@ -7,6 +7,7 @@
 //
 
 #import "MGLModule.h"
+#import "MGLDefaultStyle.h"
 #import "RCTMGLEventTypes.h"
 #import "MGLOfflineModule.h"
 #import "CameraMode.h"
@@ -29,7 +30,7 @@ RCT_EXPORT_MODULE();
     NSMutableDictionary *styleURLS = [[NSMutableDictionary alloc] init];
 
 #ifdef RNMGL_USE_MAPLIBRE
-    for (MGLStyle* style in [MGLStyle predefinedStyles]) {
+    for (MGLDefaultStyle* style in [MGLStyle predefinedStyles]) {
       [styleURLS setObject:[style.url absoluteString] forKey:style.name];
     }
     [styleURLS setObject:[[MGLStyle defaultStyleURL] absoluteString] forKey:@"Default"];
