@@ -99,18 +99,6 @@ public class CameraStop {
 
         boolean hasSetZoom = false;
 
-        // Adding map padding to the camera padding which is the same behavior as
-        // mapbox native does on iOS
-        double[] contentInset = mapView.getContentInset();
-
-        int paddingLeft = Double.valueOf(contentInset[0] + mPaddingLeft).intValue();
-        int paddingTop = Double.valueOf(contentInset[1] + mPaddingTop).intValue();
-        int paddingRight = Double.valueOf(contentInset[2] + mPaddingRight).intValue();
-        int paddingBottom = Double.valueOf(contentInset[3] + mPaddingBottom).intValue();
-
-        int[] cameraPadding = {paddingLeft, paddingTop, paddingRight, paddingBottom};
-        int[] cameraPaddingClipped = clippedPadding(cameraPadding, mapView);
-
         if (mLatLng != null) {
             builder.target(mLatLng);
             builder.padding(
