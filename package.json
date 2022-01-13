@@ -1,7 +1,7 @@
 {
   "name": "@sdacunha/maps",
   "description": "A Mapbox GL react native module for creating custom maps",
-  "version": "8.5.6",
+  "version": "8.5.7",
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com"
