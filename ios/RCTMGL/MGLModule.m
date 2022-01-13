@@ -7,13 +7,12 @@
 //
 
 #import "MGLModule.h"
-#import "MGLDefaultStyle.h"
 #import "RCTMGLEventTypes.h"
 #import "MGLOfflineModule.h"
 #import "CameraMode.h"
 #import "RCTMGLSource.h"
 #import "MGLCustomHeaders.h"
-@import Mapbox;
+#import <Mapbox/Mapbox.h>
 
 @implementation MGLModule
 
