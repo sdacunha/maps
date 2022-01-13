@@ -23,7 +23,6 @@ try {
 } catch {
   // Empty catch block
 }
-
 type InstallerBlockName = 'pre' | 'post';
 
 /**
@@ -37,6 +36,7 @@ type InstallerBlockName = 'pre' | 'post';
 const withCocoaPodsInstallerBlocks: ConfigPlugin = c => {
   return withDangerousMod(c, [
     'ios',
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     async config => {
       const file = path.join(config.modRequest.platformProjectRoot, 'Podfile');
 
@@ -57,9 +57,9 @@ const withCocoaPodsInstallerBlocks: ConfigPlugin = c => {
 export function applyCocoaPodsModifications(contents: string): string {
   // Ensure installer blocks exist
   let src = addInstallerBlock(contents, 'pre');
-  src = addInstallerBlock(src, 'post');
+  // src = addInstallerBlock(src, "post");
   src = addMapboxInstallerBlock(src, 'pre');
-  src = addMapboxInstallerBlock(src, 'post');
+  // src = addMapboxInstallerBlock(src, "post");
   return src;
 }
 
