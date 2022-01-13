@@ -13,7 +13,6 @@
 #import "RCTMGLSource.h"
 #import "MGLCustomHeaders.h"
 #import <Mapbox/Mapbox.h>
-#import <Mapbox/MGLDefaultStyle.h>
 
 @implementation MGLModule
 
@@ -30,9 +29,9 @@ RCT_EXPORT_MODULE();
     NSMutableDictionary *styleURLS = [[NSMutableDictionary alloc] init];
 
 #ifdef RNMGL_USE_MAPLIBRE
-    for (MGLDefaultStyle* style in [MGLStyle predefinedStyles]) {
-      [styleURLS setObject:[style.url absoluteString] forKey:style.name];
-    }
+    // for (MGLDefaultStyle* style in [MGLStyle predefinedStyles]) {
+    //   [styleURLS setObject:[style.url absoluteString] forKey:style.name];
+    // }
     [styleURLS setObject:[[MGLStyle defaultStyleURL] absoluteString] forKey:@"Default"];
 #else
     [styleURLS setObject:[MGLStyle.streetsStyleURL absoluteString] forKey:@"Street"];
