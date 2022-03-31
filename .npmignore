@@ -46,3 +46,4 @@ coverage
 plugin/src
 plugin/jest.config.js
 plugin/tsconfig.json
+!plugin/build
