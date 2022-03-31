@@ -14,10 +14,10 @@ import {
 } from '@expo/config-plugins/build/utils/generateCode';
 
 let pkg: {name: string; version?: string} = {
-  name: '@rnmapbox/maps',
+  name: '@sdacunha/maps',
 };
 try {
-  pkg = require('@rnmapbox/maps/package.json');
+  pkg = require('@sdacunha/maps/package.json');
 } catch {
   // empty catch block
 }
@@ -100,9 +100,9 @@ export function addMapboxInstallerBlock(
   blockName: InstallerBlockName,
 ): string {
   return mergeContents({
-    tag: `@rnmapbox/maps-${blockName}_installer`,
+    tag: `@sdacunha/maps-${blockName}_installer`,
     src,
-    newSrc: `    $RNMBGL.${blockName}_install(installer)`,
+    newSrc: `    $RNMapboxMaps.${blockName}_install(installer)`,
     anchor: new RegExp(`${blockName}_install do \\|installer\\|`),
     offset: 1,
     comment: '#',

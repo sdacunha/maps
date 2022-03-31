@@ -1,5 +1,5 @@
 {
-  "name": "@rnmapbox/maps",
+  "name": "@sdacunha/maps",
   "description": "A Mapbox react native module for creating custom maps",
   "version": "10.0.0-beta.0",
   "publishConfig": {
@@ -17,7 +17,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rnmapbox/maps"
+    "url": "https://github.com/sdacunha/maps"
   },
   "scripts": {
     "fetch:style:spec": ". ./scripts/download-style-spec.sh",

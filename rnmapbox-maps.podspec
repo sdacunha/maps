@@ -202,8 +202,8 @@ Pod::Spec.new do |s|
   s.summary		= "React Native Component for Mapbox"
   s.version		= package['version']
   s.authors		= { "Miklós Fazekas" => "mfazekas@szemafor.com (https://github.com/mfazekas/)" }
-  s.homepage    	= "https://github.com/rnmapbox/maps#readme"
-  s.source      	= { :git => "https://github.com/rnmapbox/maps.git" }
+  s.homepage    	= "https://github.com/sdacunha/maps#readme"
+  s.source      	= { :git => "https://github.com/sdacunha/maps.git" }
   s.license     	= "MIT"
   s.platform    	= :ios, "11.0"
 
