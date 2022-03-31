@@ -18,7 +18,7 @@ const exclusionList = require('metro-config/src/defaults/exclusionList');
 const glob = require('glob-to-regexp');
 
 const extraNodeModules = {
-  '@rnmapbox/maps': path.resolve(__dirname + '/../maps'),
+  '@sdacunha/maps': path.resolve(__dirname + '/../maps'),
 };
 
 function getBlacklist() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import MapboxGL, {MapView, Camera} from '@rnmapbox/maps';
+import MapboxGL, {MapView, Camera} from '@sdacunha/maps';
 import {
   Alert,
   StyleSheet,

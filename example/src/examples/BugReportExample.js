@@ -6,7 +6,7 @@ import {
   SymbolLayer,
   CircleLayer,
   Camera,
-} from '@rnmapbox/maps';
+} from '@sdacunha/maps';
 
 const styles = {
   mapView: {flex: 1},

@@ -4,35 +4,33 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
+---
 
 ---
 
-
----------  
-
 🚨🚨🚨
-* Please respect and fill out the issue template
-* Before you report, please make sure you tested on a physical device
-* For build issues: Can you reproduce it on a clean install of the example app? Please include full steps to reproduce from `react-native init`
-* Please include standalone code sample - a single component with one MapView in it. Use [one of our example](https://github.com/rnmapbox/maps/blob/main/example/src/examples/PointInMapView.js) screens as a starging point.
-* Use [discussions](https://github.com/rnmapbox/maps/discussions) or gitter and/or stack overflow for questions.
 
-If you want others to spend time on your issue, please make sure to first spend some time on the ticket. 
+- Please respect and fill out the issue template
+- Before you report, please make sure you tested on a physical device
+- For build issues: Can you reproduce it on a clean install of the example app? Please include full steps to reproduce from `react-native init`
+- Please include standalone code sample - a single component with one MapView in it. Use [one of our example](https://github.com/rnmapbox/maps/blob/main/example/src/examples/PointInMapView.js) screens as a starging point.
+- Use [discussions](https://github.com/rnmapbox/maps/discussions) or gitter and/or stack overflow for questions.
+
+If you want others to spend time on your issue, please make sure to first spend some time on the ticket.
 
 Not following the above will lead to the ticket being closed.
 Thanks for understanding.  
-Please understand that the project is run by volunteers on their own free time.  
+Please understand that the project is run by volunteers on their own free time.
 
-🚨🚨🚨  
+🚨🚨🚨
 
----------
-
+---
 
 **Describe the bug**  
 A clear and concise description of what the bug is.
 
 **To Reproduce**  
-Steps to reproduce the behavior. 
+Steps to reproduce the behavior.
 
 Please include a single standalone React Native component.  
 Use [our BugReportTemplate](https://github.com/rnmapbox/maps/blob/main/example/src/examples/BugReportTemplate.js) screens as a starting point.
@@ -41,14 +39,10 @@ Please simplify the example as much as possible!
 Chances that a bug report will be investiagete and worked on are exponetially higher with a complete and _working_ repro BugTemplate!
 
 Example:
+
 ```js
 import React from 'react';
-import {
-  MapView,
-  ShapeSource,
-  LineLayer,
-  Camera,
-} from '@rnmapbox/maps';
+import {MapView, ShapeSource, LineLayer, Camera} from '@sdacunha/maps';
 
 const aLine = {
   type: 'LineString',
@@ -80,7 +74,7 @@ Example:
 react-native init sample --version react-native@0.60.5
 cd sample
 npm install rnmapbox/maps#main --save
-# or released version `npm install @rnmapbox/maps@8.0.0-rc1 --save`
+# or released version `npm install @sdacunha/maps@8.0.0-rc1 --save`
 react-native run-android
 ```
 
@@ -93,15 +87,16 @@ A clear and concise description of what is currently happening.
 **Screenshots**  
 If applicable, add screenshots to help explain your problem.
 
-**Versions (please complete the following information):**  
- - Platform: [e.g. Android, iOS]
- - Platform OS: [e.g. Android 9, iOS 10]
- - Device: [e.g. iPhone6]
- - Emulator/ Simulator: [yes/ no]
- - Dev OS: [e.g. OSX 11.0.1, Win10]
- - @rnmapbox/maps Version [e.g. 10.0.1]
- - Mapbox GL version [e.g. 6.3.0]
- - React Native Version [e.g. 0.59]
+**Versions (please complete the following information):**
+
+- Platform: [e.g. Android, iOS]
+- Platform OS: [e.g. Android 9, iOS 10]
+- Device: [e.g. iPhone6]
+- Emulator/ Simulator: [yes/ no]
+- Dev OS: [e.g. OSX 11.0.1, Win10]
+- @sdacunha/maps Version [e.g. 10.0.1]
+- Mapbox GL version [e.g. 6.3.0]
+- React Native Version [e.g. 0.59]
 
 **Additional context**  
 Add any other context about the problem here.

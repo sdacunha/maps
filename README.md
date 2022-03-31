@@ -14,25 +14,23 @@
 
 # Mapbox Maps SDK for React Native
 
-_An unofficial React Native library for building maps with   
+_An unofficial React Native library for building maps with  
 the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) and [Mapbox Maps SDK for Android](https://www.mapbox.com/android-sdk/)_
 
-At the moment the following implementations are supported: 
+At the moment the following implementations are supported:
 
-
-|*RNMapboxMapsImpl*|*Notes*|
-|----------------|-----|
-|mapbox|New [Mapbox v10](https://www.mapbox.com/mobile-maps-sdk) implementation (BETA)|
-|maplibre|[MapLibre](https://github.com/maplibre/maplibre-gl-native) opensource fork of Mapbox SDKs|
-|mapbox-gl|Legacy mapbox implementation [iOS](https://docs.mapbox.com/android/legacy/maps/guides/) [Android](https://docs.mapbox.com/ios/legacy/maps/guides/)|
+| _RNMapboxMapsImpl_ | _Notes_                                                                                                                                            |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| mapbox             | New [Mapbox v10](https://www.mapbox.com/mobile-maps-sdk) implementation (BETA)                                                                     |
+| maplibre           | [MapLibre](https://github.com/maplibre/maplibre-gl-native) opensource fork of Mapbox SDKs                                                          |
+| mapbox-gl          | Legacy mapbox implementation [iOS](https://docs.mapbox.com/android/legacy/maps/guides/) [Android](https://docs.mapbox.com/ios/legacy/maps/guides/) |
 
 _See [iOS](ios/install.md) & [Android](android/install.md) setup guide for more details on setting `RNMapboxMapsImpl`_
-
 
 ---
 
 [![npm version](https://badge.fury.io/js/%40react-native-mapbox-gl%2Fmaps.svg)](https://badge.fury.io/js/%40react-native-mapbox-gl%2Fmaps)  
-[![iOS & Android Build](https://github.com/rnmapbox/maps/actions/workflows/on-push.yml/badge.svg?branch=main)](https://github.com/rnmapbox/maps/actions/workflows/on-push.yml?branch=main)  
+[![iOS & Android Build](https://github.com/rnmapbox/maps/actions/workflows/on-push.yml/badge.svg?branch=main)](https://github.com/rnmapbox/maps/actions/workflows/on-push.yml?branch=main)
 
 ---
 
@@ -52,13 +50,11 @@ _See [iOS](ios/install.md) & [Android](android/install.md) setup guide for more 
 1. On Android we support from version 6 (API 23) upwards
 2. Please [Sign Up to Mapbox](https://account.mapbox.com/auth/signup/) to get the Mapbox Access Token.
 
-
 ## Dependencies
 
 - [node](https://nodejs.org)
 - [npm](https://www.npmjs.com/)
 - [React Native](https://facebook.github.io/react-native/) (0.60+)
-
 
 ## Installation
 
@@ -66,12 +62,12 @@ _See [iOS](ios/install.md) & [Android](android/install.md) setup guide for more 
 
 ```sh
 # install with Yarn
-# yarn add @rnmapbox/maps
+# yarn add @sdacunha/maps
 yarn add rnmapbox/maps#main
 
 
 # or install with NPM
-# npm install @rnmapbox/maps --save
+# npm install @sdacunha/maps --save
 npm install rnmapbox/maps#main --save
 
 ```
@@ -83,14 +79,16 @@ npm install rnmapbox/maps#main --save
 - [Expo](/plugin/install.md)
 - [Example](/example)
 
-
 ### Getting Started
+
 For more information, check out our [Getting Started](/docs/GettingStarted.md) section
 
 ## Run Project
+
 Before you run your project be sure you have completed the Installation Guides for Android or iOS.
 
 ### Run iOS Simulator
+
 ```sh
 # Run with yarn
 yarn run ios
@@ -100,6 +98,7 @@ npm run ios
 ```
 
 ### Run Android Emulator
+
 ```sh
 # Run with yarn
 yarn run android
@@ -111,9 +110,9 @@ npm run android
 ## Adding a map
 
 ```js
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import MapboxGL from '@rnmapbox/maps';
+import React, {Component} from 'react';
+import {StyleSheet, View} from 'react-native';
+import MapboxGL from '@sdacunha/maps';
 
 MapboxGL.setAccessToken('<YOUR_ACCESSTOKEN>');
 
@@ -122,16 +121,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#F5FCFF',
   },
   container: {
     height: 300,
     width: 300,
-    backgroundColor: 'tomato'
+    backgroundColor: 'tomato',
   },
   map: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default class App extends Component {
@@ -208,7 +207,7 @@ Example:
 ```json
 "jest": {
   "preset": "react-native",
-  "setupFilesAfterEnv": ["@rnmapbox/maps/setup-jest"]
+  "setupFilesAfterEnv": ["@sdacunha/maps/setup-jest"]
 }
 ```
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import MapboxGL from '@rnmapbox/maps';
+import MapboxGL from '@sdacunha/maps';
 import {Slider} from 'react-native-elements';
 
 import sheet from '../../styles/sheet';

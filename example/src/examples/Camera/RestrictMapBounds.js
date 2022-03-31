@@ -1,5 +1,5 @@
 import React from 'react';
-import MapboxGL from '@rnmapbox/maps';
+import MapboxGL from '@sdacunha/maps';
 import bboxPolygon from '@turf/bbox-polygon';
 
 import sheet from '../../styles/sheet';

@@ -7,7 +7,7 @@ import {
   Logger,
   Terrain,
   RasterDemSource,
-} from '@rnmapbox/maps';
+} from '@sdacunha/maps';
 
 import Page from '../common/Page';
 import BaseExamplePropTypes from '../common/BaseExamplePropTypes';

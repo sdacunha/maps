@@ -1,5 +1,5 @@
 import React from 'react';
-import MapboxGL from '@rnmapbox/maps';
+import MapboxGL from '@sdacunha/maps';
 import {StyleSheet, Text, View, LogBox, SafeAreaView} from 'react-native';
 import {createStackNavigator, TransitionPresets} from 'react-navigation-stack';
 import {createAppContainer} from 'react-navigation';

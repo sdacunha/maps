@@ -12,9 +12,10 @@ Updated MapLibre on Android to 9.5.2 ([#1780](https://github.com/rnmapbox/maps/p
 #### Breaking changes:
 
 The setup was changed - see install instructions for more details. In a nuthsell:
-* On both android/ios to select mapbox implementation use `RNMabpoxMapsImpl`/`$RNMapboxMapsImpl` variable which can be one of (`maplibre`,`mapbox`(aka v10),`mapbox-gl`)
-* On Podfile `$RNMBGL.(pre|post)_install` was changed `$RNMapboxMaps.(pre|post)_install`
-* Package name was changed from `@react-native-mapbox-gl/maps` to `@rnmapbox/maps`. If you just testing with the v10 version you can use something like [babel-plugin-transform-rename-import](https://www.npmjs.com/package/babel-plugin-transform-rename-import) to keep using the old imports for a while.
+
+- On both android/ios to select mapbox implementation use `RNMabpoxMapsImpl`/`$RNMapboxMapsImpl` variable which can be one of (`maplibre`,`mapbox`(aka v10),`mapbox-gl`)
+- On Podfile `$RNMBGL.(pre|post)_install` was changed `$RNMapboxMaps.(pre|post)_install`
+- Package name was changed from `@react-native-mapbox-gl/maps` to `@sdacunha/maps`. If you just testing with the v10 version you can use something like [babel-plugin-transform-rename-import](https://www.npmjs.com/package/babel-plugin-transform-rename-import) to keep using the old imports for a while.
 
 #### Changes:
 
@@ -24,7 +25,7 @@ The setup was changed - see install instructions for more details. In a nuthsell
 
 fix: add TypeScript type for MapViews's preferredFramesPerSecond prop ([#1717](https://github.com/rnmapbox/maps/pull/1717))  
 fix(example): update `/example` project (iOS only) to work with ARM-based Macs ([#1703](https://github.com/rnmapbox/maps/pull/1703))  
-fix(iOS): correct import of UIView+React.h header ([#1672](https://github.com/rnmapbox/maps/pull/1672))  
+fix(iOS): correct import of UIView+React.h header ([#1672](https://github.com/rnmapbox/maps/pull/1672))
 
 ---
 

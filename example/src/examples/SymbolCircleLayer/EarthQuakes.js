@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlatList} from 'react-native';
 import {Overlay, ListItem, FAB, Icon} from 'react-native-elements';
-import MapboxGL from '@rnmapbox/maps';
+import MapboxGL from '@sdacunha/maps';
 import moment from 'moment';
 
 import sheet from '../../styles/sheet';

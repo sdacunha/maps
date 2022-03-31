@@ -20,7 +20,7 @@ if $RNMapboxMapsImpl == 'maplibre'
     url: "https://github.com/maplibre/maplibre-gl-native-distribution",
     requirement: {
       kind: "upToNextMajorVersion",
-      minimumVersion: "5.12.1"
+      minimumVersion: "5.12.2"
     },
     product_name: "Mapbox"
   }

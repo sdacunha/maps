@@ -14,7 +14,7 @@ import {
   RasterDemSource,
   Animated,
   MarkerView,
-} from '@rnmapbox/maps';
+} from '@sdacunha/maps';
 
 import Page from '../common/Page';
 

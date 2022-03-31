@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text} from 'react-native';
-import MapboxGL from '@rnmapbox/maps';
+import MapboxGL from '@sdacunha/maps';
 import {featureCollection, feature} from '@turf/helpers';
 
 import sheet from '../../styles/sheet';

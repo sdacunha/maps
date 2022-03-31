@@ -4,7 +4,7 @@
 
 The following assumes, that you're using autolinking and installed
 
-`@rnmapbox/maps` via `npm` or `yarn`.
+`@sdacunha/maps` via `npm` or `yarn`.
 
 <br>
 
@@ -99,4 +99,3 @@ $RNMapboxMapsVersion = '~> 5.9.0'
 If you are using version `v6.0.0` of the SDK or later, you will need to authorize your download of the Maps SDK with a secret access token with the `DOWNLOADS:READ` scope. This [guide](https://docs.mapbox.com/ios/maps/guides/install/#configure-credentials) explains how to configure the secret token under section `Configure your secret token`.
 
 <br>
-

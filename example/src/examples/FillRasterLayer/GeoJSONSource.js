@@ -1,5 +1,5 @@
 import React from 'react';
-import MapboxGL from '@rnmapbox/maps';
+import MapboxGL from '@sdacunha/maps';
 
 import sheet from '../../styles/sheet';
 import gridPattern from '../../assets/grid_pattern.png';

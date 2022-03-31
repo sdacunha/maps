@@ -343,11 +343,11 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
-  - rnmapbox-maps (10.0.0-beta.0):
+  - rnmapbox-maps (10.0.0-beta.3):
     - React
     - React-Core
-    - rnmapbox-maps/DynamicLibrary (= 10.0.0-beta.0)
-  - rnmapbox-maps/DynamicLibrary (10.0.0-beta.0):
+    - rnmapbox-maps/DynamicLibrary (= 10.0.0-beta.3)
+  - rnmapbox-maps/DynamicLibrary (10.0.0-beta.3):
     - React
     - React-Core
   - RNScreens (3.13.1):
@@ -519,7 +519,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
+  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 6816ca39e1cc8beffd2a96783f518296789d1c48
   FBReactNativeSpec: 3b1e86618e902743fde35b40cf9ebd100fd655b7
   Flipper: 30e8eeeed6abdc98edaf32af0cda2f198be4b733
@@ -532,7 +532,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  glog: 5337263514dd6f09803962437687240c5dc39aa4
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
@@ -562,13 +562,13 @@ SPEC CHECKSUMS:
   ReactCommon: eb059748e842a1a86025ebbd4ac9d99e74492f88
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  rnmapbox-maps: 7967bd7d29277012922129eda7e7a9111fb985cf
+  rnmapbox-maps: 01c66fa0a4ed85949da024377121d6628e33acfe
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 703cbe79aa876cda20a88b726c28c8dbf135b2ed
+PODFILE CHECKSUM: fbad3ccd13dd810e6520d097c59114c1309a5f92
 
 COCOAPODS: 1.11.2
