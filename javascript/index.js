@@ -1,16 +1,12 @@
-import {
-  Animated as RNAnimated,
-  NativeModules,
-  PermissionsAndroid,
-} from 'react-native';
+import { NativeModules, PermissionsAndroid } from 'react-native';
 
-import {isAndroid} from './utils';
+import { isAndroid } from './utils';
 import MapView from './components/MapView';
 import Light from './components/Light';
 import PointAnnotation from './components/PointAnnotation';
-import Annotation from './components/annotations/Annotation'; // eslint-disable-line import/no-cycle
+import Annotation from './components/annotations/Annotation';
 import Callout from './components/Callout';
-import UserLocation from './components/UserLocation'; // eslint-disable-line import/no-cycle
+import UserLocation from './components/UserLocation';
 import Camera from './components/Camera';
 import VectorSource from './components/VectorSource';
 import ShapeSource from './components/ShapeSource';
@@ -41,7 +37,7 @@ import AnimatedRouteCoordinatesArray from './utils/animated/AnimatedRouteCoordin
 import Style from './components/Style';
 import Logger from './utils/Logger';
 
-const MapboxGL = {...NativeModules.MGLModule};
+const MapboxGL = { ...NativeModules.MGLModule };
 
 // static methods
 MapboxGL.requestAndroidLocationPermissions = async function () {
@@ -121,7 +117,7 @@ MapboxGL.AnimatedRouteCoordinatesArray = AnimatedRouteCoordinatesArray;
 MapboxGL.AnimatedShape = AnimatedShape;
 MapboxGL.Logger = Logger;
 
-const {LineJoin} = MapboxGL;
+const { LineJoin } = MapboxGL;
 
 export {
   MapView,

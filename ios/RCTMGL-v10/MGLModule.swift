@@ -35,12 +35,21 @@ class MGLModule : NSObject {
         ["Update": RCT_MAPBOX_USER_LOCATION_UPDATE],
       "CameraModes":
         [
-          "Ease": "ease",
+          "Flight": CameraMode.flight.rawValue,
+          "Ease": CameraMode.ease.rawValue,
+          "Linear": CameraMode.linear.rawValue,
+          "Move": CameraMode.none.rawValue
         ],
       "EventTypes":
         [
+          "RegionIsChanging" : RCTMGLEvent.EventType.regionIsChanging.rawValue,
           "RegionDidChange" : RCTMGLEvent.EventType.regionDidChange.rawValue,
-          "DidFinishLoadingMap": RCTMGLEvent.EventType.didFinishLoadingMap.rawValue
+          "CameraChanged" : RCTMGLEvent.EventType.cameraChanged.rawValue,
+          "MapIdle" : RCTMGLEvent.EventType.mapIdle.rawValue,
+          "DidFinishLoadingStyle": RCTMGLEvent.EventType.didFinishLoadingStyle.rawValue,
+          "DidFinishLoadingMap": RCTMGLEvent.EventType.didFinishLoadingMap.rawValue,
+          "DidFinishRenderingFrameFully":  RCTMGLEvent.EventType.didFinishRenderingFully.rawValue,
+          "DidFinishRenderingFrame": RCTMGLEvent.EventType.didFinishRendering.rawValue,
         ],
       "OfflineCallbackName":
         [

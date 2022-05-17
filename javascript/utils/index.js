@@ -7,6 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+import PropTypes from 'prop-types';
 
 function getAndroidManagerInstance(module) {
   const haveViewManagerConfig =
@@ -21,6 +22,13 @@ function getIosManagerInstance(module) {
 }
 
 export const viewPropTypes = ViewPropTypes || View.props;
+
+export const ornamentPositionPropType = PropTypes.oneOfType([
+  PropTypes.shape({ top: PropTypes.number, left: PropTypes.number }),
+  PropTypes.shape({ top: PropTypes.number, right: PropTypes.number }),
+  PropTypes.shape({ bottom: PropTypes.number, left: PropTypes.number }),
+  PropTypes.shape({ bottom: PropTypes.number, right: PropTypes.number }),
+]);
 
 export function isAndroid() {
   return Platform.OS === 'android';
@@ -79,6 +87,9 @@ export function runNativeCommand(module, name, nativeRef, args = []) {
     );
   }
 
+  if (!managerInstance[name]) {
+    throw new Error(`Could not find ${name} for ${module}`);
+  }
   return managerInstance[name](handle, ...args);
 }
 
@@ -95,8 +106,8 @@ export function cloneReactChildrenWithProps(children, propsToAdd = {}) {
     foundChildren = children;
   }
 
-  const filteredChildren = foundChildren.filter(child => !!child); // filter out falsy children, since some can be null
-  return React.Children.map(filteredChildren, child =>
+  const filteredChildren = foundChildren.filter((child) => !!child); // filter out falsy children, since some can be null
+  return React.Children.map(filteredChildren, (child) =>
     React.cloneElement(child, propsToAdd),
   );
 }

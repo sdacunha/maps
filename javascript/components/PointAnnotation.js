@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {requireNativeComponent, StyleSheet, Platform} from 'react-native';
+import { requireNativeComponent, StyleSheet, Platform } from 'react-native';
 
-import {toJSONString, isFunction, viewPropTypes} from '../utils';
-import {makePoint} from '../utils/geoUtils';
+import { toJSONString, isFunction, viewPropTypes } from '../utils';
+import { makePoint } from '../utils/geoUtils';
 
 import NativeBridgeComponent from './NativeBridgeComponent';
 
@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
  * PointAnnotation represents a one-dimensional shape located at a single geographical coordinate.
  *
  * Consider using ShapeSource and SymbolLayer instead, if you have many points and you have static images,
- * they'll offer much better performance
+ * they'll offer much better performance.
  *
- * .
- * If you need interctive views please use MarkerView,
+ * If you need interactive views please use MarkerView,
  * as with PointAnnotation on Android child views are rendered onto a bitmap for better performance.
  */
 class PointAnnotation extends NativeBridgeComponent(React.PureComponent) {
@@ -107,7 +106,7 @@ class PointAnnotation extends NativeBridgeComponent(React.PureComponent) {
   };
 
   static defaultProps = {
-    anchor: {x: 0.5, y: 0.5},
+    anchor: { x: 0.5, y: 0.5 },
     draggable: false,
   };
 
@@ -178,7 +177,7 @@ class PointAnnotation extends NativeBridgeComponent(React.PureComponent) {
   render() {
     const props = {
       ...this.props,
-      ref: nativeRef => this._setNativeRef(nativeRef),
+      ref: (nativeRef) => this._setNativeRef(nativeRef),
       id: this.props.id,
       title: this.props.title,
       snippet: this.props.snippet,

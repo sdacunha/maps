@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {NativeModules, requireNativeComponent} from 'react-native';
+import { NativeModules, requireNativeComponent } from 'react-native';
 
-import {toJSONString, viewPropTypes, existenceChange} from '../utils';
+import { toJSONString, viewPropTypes, existenceChange } from '../utils';
 import * as geoUtils from '../utils/geoUtils';
 
 const MapboxGL = NativeModules.MGLModule;
@@ -112,9 +112,20 @@ class Camera extends React.Component {
     animationDuration: PropTypes.number,
 
     /**
-     * The animationstyle when the camara updates. One of: `flyTo`, `easeTo`, `linearTo`, `moveTo`
+     * The animation style when the camara updates. One of:
+     * `flyTo`: A complex flight animation, affecting both position and zoom.
+     * `easeTo`: A standard damped curve.
+     * `linearTo`: An even linear transition.
+     * `none`: An instantaneous change (v10 only).
+     * `moveTo`: An instantaneous change (<v10).
      */
-    animationMode: PropTypes.oneOf(['flyTo', 'easeTo', 'linearTo', 'moveTo']),
+    animationMode: PropTypes.oneOf([
+      'flyTo',
+      'easeTo',
+      'linearTo',
+      'none',
+      'moveTo',
+    ]),
 
     /**
      * Default view settings applied on camera
@@ -125,12 +136,12 @@ class Camera extends React.Component {
     ...SettingsPropTypes,
 
     /**
-     * The minimun zoom level of the map
+     * The minimum zoom level of the map
      */
     minZoomLevel: PropTypes.number,
 
     /**
-     * The maximun zoom level of the map
+     * The maximum zoom level of the map
      */
     maxZoomLevel: PropTypes.number,
 
@@ -191,9 +202,10 @@ class Camera extends React.Component {
 
   static Mode = {
     Flight: 'flyTo',
-    Move: 'moveTo',
     Ease: 'easeTo',
     Linear: 'linearTo',
+    None: 'none',
+    Move: 'moveTo',
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -218,11 +230,11 @@ class Camera extends React.Component {
     }
 
     if (c.followUserLocation && !n.followUserLocation) {
-      this.refs.camera.setNativeProps({followUserLocation: false});
+      this.refs.camera.setNativeProps({ followUserLocation: false });
       return;
     }
     if (!c.followUserLocation && n.followUserLocation) {
-      this.refs.camera.setNativeProps({followUserLocation: true});
+      this.refs.camera.setNativeProps({ followUserLocation: true });
     }
 
     if (n.followUserLocation) {
@@ -252,8 +264,8 @@ class Camera extends React.Component {
     }
 
     const cameraConfig = {
-      bounds: undefined,
-      centerCoordinate: undefined,
+      bounds: n.bounds,
+      centerCoordinate: n.centerCoordinate,
       padding: n.padding,
       zoomLevel: n.zoomLevel,
       pitch: n.pitch,
@@ -272,21 +284,14 @@ class Camera extends React.Component {
     const pitchChanged = this._hasNumberChanged(c.pitch, n.pitch);
     const headingChanged = this._hasNumberChanged(c.heading, n.heading);
 
-    let shouldUpdate = false;
-
-    if (n.bounds && boundsChanged) {
-      cameraConfig.bounds = n.bounds;
-      shouldUpdate = true;
-    } else if (n.centerCoordinate && centerCoordinateChanged) {
-      cameraConfig.centerCoordinate = n.centerCoordinate;
-      shouldUpdate = true;
-    }
-
-    if (paddingChanged || zoomChanged || pitchChanged || headingChanged) {
-      shouldUpdate = true;
-    }
-
-    if (shouldUpdate) {
+    if (
+      boundsChanged ||
+      centerCoordinateChanged ||
+      paddingChanged ||
+      zoomChanged ||
+      pitchChanged ||
+      headingChanged
+    ) {
       this._setCamera(cameraConfig);
     }
   }
@@ -545,7 +550,7 @@ class Camera extends React.Component {
       cameraConfig = this._createStopConfig(config);
     }
 
-    this.refs.camera.setNativeProps({stop: cameraConfig});
+    this.refs.camera.setNativeProps({ stop: cameraConfig });
   }
 
   _createDefaultCamera() {
@@ -586,7 +591,7 @@ class Camera extends React.Component {
     }
 
     if (config.bounds && config.bounds.ne && config.bounds.sw) {
-      const {ne, sw} = config.bounds;
+      const { ne, sw } = config.bounds;
       stopConfig.bounds = toJSONString(geoUtils.makeLatLngBounds(ne, sw));
     }
 
@@ -606,10 +611,13 @@ class Camera extends React.Component {
     switch (config.animationMode) {
       case Camera.Mode.Flight:
         return MapboxGL.CameraModes.Flight;
-      case Camera.Mode.Move:
-        return MapboxGL.CameraModes.None;
+      case Camera.Mode.Ease:
+        return MapboxGL.CameraModes.Ease;
       case Camera.Mode.Linear:
         return MapboxGL.CameraModes.Linear;
+      case Camera.Mode.None:
+      case Camera.Mode.Move:
+        return MapboxGL.CameraModes.Move;
       default:
         return MapboxGL.CameraModes.Ease;
     }
@@ -640,8 +648,8 @@ class Camera extends React.Component {
         followHeading={this.props.followHeading}
         followZoomLevel={this.props.followZoomLevel}
         stop={this._createStopConfig(props)}
-        maxZoomLevel={this.props.maxZoomLevel}
         minZoomLevel={this.props.minZoomLevel}
+        maxZoomLevel={this.props.maxZoomLevel}
         maxBounds={this._getMaxBounds()}
         defaultStop={this._createDefaultCamera()}
         {...callbacks}

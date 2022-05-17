@@ -421,7 +421,7 @@
         "required": false,
         "type": "enum",
         "default": "'easeTo'",
-        "description": "The animationstyle when the camara updates. One of: `flyTo`, `easeTo`, `linearTo`, `moveTo`"
+        "description": "The animation style when the camara updates. One of:\n`flyTo`: A complex flight animation, affecting both position and zoom.\n`easeTo`: A standard damped curve.\n`linearTo`: An even linear transition.\n`none`: An instantaneous change (v10 only).\n`moveTo`: An instantaneous change (<v10)."
       },
       {
         "name": "defaultSettings",
@@ -723,14 +723,14 @@
         "required": false,
         "type": "number",
         "default": "none",
-        "description": "The minimun zoom level of the map"
+        "description": "The minimum zoom level of the map"
       },
       {
         "name": "maxZoomLevel",
         "required": false,
         "type": "number",
         "default": "none",
-        "description": "The maximun zoom level of the map"
+        "description": "The maximum zoom level of the map"
       },
       {
         "name": "maxBounds",
@@ -2972,7 +2972,7 @@
       {
         "name": "attributionPosition",
         "required": false,
-        "type": "union",
+        "type": "custom",
         "default": "none",
         "description": "Adds attribution offset, e.g. `{top: 8, left: 8}` will put attribution button in top-left corner of the map"
       },
@@ -2993,7 +2993,7 @@
       {
         "name": "logoPosition",
         "required": false,
-        "type": "union",
+        "type": "custom",
         "default": "none",
         "description": "Adds logo offset, e.g. `{top: 8, left: 8}` will put the logo in top-left corner of the map"
       },
@@ -3005,18 +3005,39 @@
         "description": "Enable/Disable the compass from appearing on the map"
       },
       {
+        "name": "compassPosition",
+        "required": false,
+        "type": "custom",
+        "default": "none",
+        "description": "[`mapbox` (v10) implementation only] Adds compass offset, e.g. `{top: 8, left: 8}` will put the compass in top-left corner of the map"
+      },
+      {
         "name": "compassViewPosition",
         "required": false,
         "type": "number",
         "default": "none",
-        "description": "Change corner of map the compass starts at. 0: TopLeft, 1: TopRight, 2: BottomLeft, 3: BottomRight"
+        "description": "[`mapbox-gl` (v8) and `maplibre` implementation only] Change corner of map the compass starts at. 0: TopLeft, 1: TopRight, 2: BottomLeft, 3: BottomRight"
       },
       {
         "name": "compassViewMargins",
         "required": false,
         "type": "object",
         "default": "none",
-        "description": "Add margins to the compass with x and y values"
+        "description": "[`mapbox-gl` (v8) and `maplibre` implementation only] Add margins to the compass with x and y values"
+      },
+      {
+        "name": "scaleBarEnabled",
+        "required": false,
+        "type": "bool",
+        "default": "true",
+        "description": "[`mapbox` (v10) implementation only] Enable/Disable the scale bar from appearing on the map"
+      },
+      {
+        "name": "scaleBarPosition",
+        "required": false,
+        "type": "custom",
+        "default": "none",
+        "description": "[`mapbox` (v10) implementation only] Adds scale bar offset, e.g. `{top: 8, left: 8}` will put the scale bar in top-left corner of the map"
       },
       {
         "name": "surfaceView",
@@ -3044,7 +3065,7 @@
         "required": false,
         "type": "func",
         "default": "none",
-        "description": "This event is triggered whenever the currently displayed map region is about to change.",
+        "description": "<v10 only\n\nThis event is triggered whenever the currently displayed map region is about to change.",
         "params": [
           {
             "name": "feature",
@@ -3078,13 +3099,47 @@
         "required": false,
         "type": "func",
         "default": "none",
-        "description": "This event is triggered whenever the currently displayed map region finished changing",
+        "description": "This event is triggered whenever the currently displayed map region finished changing.",
         "params": [
           {
             "name": "feature",
             "description": "The geojson point feature at the camera center, properties contains zoomLevel, visibleBounds",
             "type": {
               "name": "PointFeature"
+            },
+            "optional": false
+          }
+        ]
+      },
+      {
+        "name": "onCameraChanged",
+        "required": false,
+        "type": "func",
+        "default": "none",
+        "description": "iOS, v10 only, experimental.\n\nCalled when the currently displayed map area changes.\nReplaces onRegionIsChanging, so can't set both",
+        "params": [
+          {
+            "name": "region",
+            "description": "A payload containing the map center, bounds, and other properties.",
+            "type": {
+              "name": "MapState"
+            },
+            "optional": false
+          }
+        ]
+      },
+      {
+        "name": "onMapIdle",
+        "required": false,
+        "type": "func",
+        "default": "none",
+        "description": "iOS, v10 only, experimental\n\nCalled when the currently displayed map area stops changing.\nReplaces onRegionDidChange, so can't set both",
+        "params": [
+          {
+            "name": "region",
+            "description": "A payload containing the map center, bounds, and other properties.",
+            "type": {
+              "name": "MapState"
             },
             "optional": false
           }
@@ -3226,7 +3281,7 @@
             }
           ]
         },
-        "default": "{x: 0.5, y: 0.5}",
+        "default": "{ x: 0.5, y: 0.5 }",
         "description": "Specifies the anchor being set on a particular point of the annotation.\nThe anchor point is specified in the continuous space [0.0, 1.0] x [0.0, 1.0],\nwhere (0, 0) is the top-left corner of the image, and (1, 1) is the bottom-right corner.\nNote this is only for custom annotations not the default pin view.\nDefaults to the center of the view."
       },
       {
@@ -3265,7 +3320,7 @@
     "name": "NativeUserLocation"
   },
   "PointAnnotation": {
-    "description": "PointAnnotation represents a one-dimensional shape located at a single geographical coordinate.\n\nConsider using ShapeSource and SymbolLayer instead, if you have many points and you have static images,\nthey'll offer much better performance\n\n.\nIf you need interctive views please use MarkerView,\nas with PointAnnotation on Android child views are rendered onto a bitmap for better performance.",
+    "description": "PointAnnotation represents a one-dimensional shape located at a single geographical coordinate.\n\nConsider using ShapeSource and SymbolLayer instead, if you have many points and you have static images,\nthey'll offer much better performance.\n\nIf you need interactive views please use MarkerView,\nas with PointAnnotation on Android child views are rendered onto a bitmap for better performance.",
     "displayName": "PointAnnotation",
     "methods": [
       {
@@ -3348,7 +3403,7 @@
             }
           ]
         },
-        "default": "{x: 0.5, y: 0.5}",
+        "default": "{ x: 0.5, y: 0.5 }",
         "description": "Specifies the anchor being set on a particular point of the annotation.\nThe anchor point is specified in the continuous space [0.0, 1.0] x [0.0, 1.0],\nwhere (0, 0) is the top-left corner of the image, and (1, 1) is the bottom-right corner.\nNote this is only for custom annotations not the default pin view.\nDefaults to the center of the view."
       },
       {
@@ -3966,6 +4021,13 @@
         "description": "Specifies the maximum zoom level at which to cluster points if clustering is enabled.\nDefaults to one zoom level less than the value of maxZoomLevel so that, at the maximum zoom level,\nthe shapes are not clustered."
       },
       {
+        "name": "clusterProperties",
+        "required": false,
+        "type": "object",
+        "default": "none",
+        "description": "[`mapbox-gl` (v8) implementation only]\nSpecifies custom properties on the generated clusters if clustering\nis enabled, aggregating values from clustered points.\n\nHas the form `{ \"property_name\": [operator, map_expression]}`, where\n `operator` is a custom reduce expression that references a special `[\"accumulated\"]` value -\n  it accumulates the property value from clusters/points the cluster contains\n `map_expression` produces the value of a single point\n\nExample: `{ \"resultingSum\": [[\"+\", [\"accumulated\"], [\"get\", \"resultingSum\"]], [\"get\", \"scalerank\"]] }`"
+      },
+      {
         "name": "maxZoomLevel",
         "required": false,
         "type": "number",
@@ -4337,7 +4399,7 @@
     ]
   },
   "Style": {
-    "description": "Style is a component that automatically adds sources / layers to the map using Mapbox GL Style Spec.\nOnly [`sources`](https://docs.mapbox.com/mapbox-gl-js/style-spec/sources) & [`layers`](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/) are supported.\nOther fields such as `sprites`, `glyphs` etc. will be ignored. Not all layer / source attributes from the style spec are supported, in general the supported attributes will mentioned under https://github.com/rnmapbox/maps/tree/master/docs.",
+    "description": "Style is a component that automatically adds sources / layers to the map using Mapbox GL Style Spec.\nOnly [`sources`](https://docs.mapbox.com/mapbox-gl-js/style-spec/sources) & [`layers`](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/) are supported.\nOther fields such as `sprites`, `glyphs` etc. will be ignored. Not all layer / source attributes from the style spec are supported, in general the supported attributes will mentioned under https://github.com/rnmapbox/maps/tree/main/docs.",
     "displayName": "Style",
     "methods": [],
     "props": [
@@ -5813,7 +5875,7 @@
         ],
         "params": [
           {
-            "name": "{running}"
+            "name": "{ running }"
           }
         ],
         "returns": {

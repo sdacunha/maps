@@ -1,6 +1,12 @@
 import React from 'react';
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon} from 'react-native-elements';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { Icon } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import Page from '../examples/common/Page';
@@ -51,6 +57,7 @@ import ShowRegionDidChange from '../examples/Map/ShowRegionDidChange';
 import SourceLayerVisibility from '../examples/Map/SourceLayerVisibility';
 import StyleJson from '../examples/Map/StyleJson';
 import TwoByTwo from '../examples/Map/TwoByTwo';
+import Ornaments from '../examples/Map/Ornaments';
 // SYMBOLCIRCLELAYER
 import CustomIcon from '../examples/SymbolCircleLayer/CustomIcon';
 import DataDrivenCircleColors from '../examples/SymbolCircleLayer/DataDrivenCircleColors';
@@ -68,6 +75,8 @@ import CacheManagement from '../examples/CacheManagement';
 // V10
 import SkyAndTerran from '../examples/V10/SkyAndTerran';
 import QueryTerrainElevation from '../examples/V10/QueryTerrainElevation';
+import CameraAnimation from '../examples/V10/CameraAnimation';
+import MapHandlers from '../examples/V10/MapHandlers';
 
 const styles = StyleSheet.create({
   exampleList: {
@@ -102,13 +111,13 @@ class ExampleGroup {
     this.items = items;
     this.navigationType = 'Group';
     // eslint-disable-next-line react/prop-types
-    this.Component = ({navigation}) => (
+    this.Component = ({ navigation }) => (
       <ExampleGroupComponent items={items} navigation={navigation} />
     );
   }
 }
 
-const BugReportPage = ({...props}) => (
+const BugReportPage = ({ ...props }) => (
   <Page {...props}>
     <BugReportTemplate />
   </Page>
@@ -119,6 +128,8 @@ const Examples = [
   new ExampleGroup('V10', [
     new ExampleItem('Sky and Terrain', SkyAndTerran),
     new ExampleItem('Query Terrain Elevation', QueryTerrainElevation),
+    new ExampleItem('Camera Animation', CameraAnimation),
+    new ExampleItem('Map Handlers', MapHandlers),
   ]),
   new ExampleGroup('Map', [
     new ExampleItem('Show Map', ShowMap),
@@ -133,6 +144,7 @@ const Examples = [
     new ExampleItem('Source Layer Visiblity', SourceLayerVisibility),
     new ExampleItem('Style JSON', StyleJson),
     new ExampleItem('Set Tint Color', SetTintColor),
+    new ExampleItem('Ornaments', Ornaments),
   ]),
   new ExampleGroup('Camera', [
     new ExampleItem('Fit (Bounds, Center/Zoom, Padding)', Fit),
@@ -193,12 +205,12 @@ const Examples = [
   new ExampleItem('Cache management', CacheManagement),
 ];
 
-function ExampleGroupComponent({items, navigation, showBack}) {
+function ExampleGroupComponent({ items, navigation, showBack }) {
   function itemPress(item) {
     navigation.navigate(item.navigationType, item);
   }
 
-  function renderItem({item}) {
+  function renderItem({ item }) {
     return (
       <View style={styles.exampleListItemBorder}>
         <TouchableOpacity onPress={() => itemPress(item)}>
@@ -231,7 +243,7 @@ function ExampleGroupComponent({items, navigation, showBack}) {
         <FlatList
           style={styles.exampleList}
           data={items}
-          keyExtractor={item => item.label}
+          keyExtractor={(item) => item.label}
           renderItem={renderItem}
         />
       </View>
@@ -257,7 +269,7 @@ class Home extends React.Component {
   };
 
   render() {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     const items = navigation.getParam('items') || Examples;
     return (
       <ExampleGroupComponent

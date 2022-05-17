@@ -1,6 +1,16 @@
 import Foundation
 import MapboxMaps
 
+enum RCTMGLError: Error, LocalizedError {
+  case parseError(String)
+  case failed(String)
+  case paramError(String)
+
+  var errorDescription: String? {
+    return String(describing: self)
+  }
+}
+
 class Logger {
   enum LogLevel : String, Comparable {
     static func < (lhs: Logger.LogLevel, rhs: Logger.LogLevel) -> Bool {
@@ -55,6 +65,25 @@ class Logger {
   }
 }
 
+func logged<T>(_ msg: String, info: (() -> String)? = nil, level: Logger.LogLevel = .error, rejecter: RCTPromiseRejectBlock? = nil, fn : () throws -> T) -> T? {
+  do {
+    return try fn()
+  } catch {
+    Logger.log(level:level, message: "\(msg) \(info?() ?? "") \(error.localizedDescription)")
+    rejecter?(msg, "\(info?() ?? "") \(error.localizedDescription)", error)
+    return nil
+  }
+}
+
+func logged<T>(_ msg: String, info: (() -> String)? = nil, errorResult: (Error) -> T, level: Logger.LogLevel = .error, fn : () throws -> T) -> T {
+  do {
+    return try fn()
+  } catch {
+    Logger.log(level:level, message: "\(msg) \(info?() ?? "") \(error.localizedDescription)")
+    return errorResult(error)
+  }
+}
+
 @objc(RCTMGLLogging)
 class RCTMGLLogging: RCTEventEmitter {
   static var shared : RCTMGLLogging? = nil
@@ -73,7 +102,7 @@ class RCTMGLLogging: RCTEventEmitter {
   
   override init() {
     super.init()
-    if let previous = RCTMGLLogging.shared {
+    if let _ = RCTMGLLogging.shared {
       // seems to happen on reload in debug versions
       // fatalError("More than one instance of RCTMGLLogging is created \(previous)")
     }

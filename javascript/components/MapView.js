@@ -6,17 +6,18 @@ import {
   NativeModules,
   requireNativeComponent,
 } from 'react-native';
-import {debounce} from 'debounce';
+import { debounce } from 'debounce';
 
-import {makePoint, makeLatLngBounds} from '../utils/geoUtils';
+import { makePoint, makeLatLngBounds } from '../utils/geoUtils';
 import {
   isFunction,
   isNumber,
   toJSONString,
   isAndroid,
   viewPropTypes,
+  ornamentPositionPropType,
 } from '../utils';
-import {getFilter} from '../utils/filterUtils';
+import { getFilter } from '../utils/filterUtils';
 import Logger from '../utils/Logger';
 
 import NativeBridgeComponent from './NativeBridgeComponent';
@@ -33,7 +34,7 @@ export const NATIVE_MODULE_NAME = 'RCTMGLMapView';
 export const ANDROID_TEXTURE_NATIVE_MODULE_NAME = 'RCTMGLAndroidTextureMapView';
 
 const styles = StyleSheet.create({
-  matchParent: {flex: 1},
+  matchParent: { flex: 1 },
 });
 
 const defaultStyleURL = MapboxGL.StyleURL.Street;
@@ -121,12 +122,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
     /**
      * Adds attribution offset, e.g. `{top: 8, left: 8}` will put attribution button in top-left corner of the map
      */
-    attributionPosition: PropTypes.oneOfType([
-      PropTypes.shape({top: PropTypes.number, left: PropTypes.number}),
-      PropTypes.shape({top: PropTypes.number, right: PropTypes.number}),
-      PropTypes.shape({bottom: PropTypes.number, left: PropTypes.number}),
-      PropTypes.shape({bottom: PropTypes.number, right: PropTypes.number}),
-    ]),
+    attributionPosition: ornamentPositionPropType,
 
     /**
      * MapView's tintColor
@@ -141,12 +137,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
     /**
      * Adds logo offset, e.g. `{top: 8, left: 8}` will put the logo in top-left corner of the map
      */
-    logoPosition: PropTypes.oneOfType([
-      PropTypes.shape({top: PropTypes.number, left: PropTypes.number}),
-      PropTypes.shape({top: PropTypes.number, right: PropTypes.number}),
-      PropTypes.shape({bottom: PropTypes.number, left: PropTypes.number}),
-      PropTypes.shape({bottom: PropTypes.number, right: PropTypes.number}),
-    ]),
+    logoPosition: ornamentPositionPropType,
 
     /**
      * Enable/Disable the compass from appearing on the map
@@ -154,14 +145,29 @@ class MapView extends NativeBridgeComponent(React.Component) {
     compassEnabled: PropTypes.bool,
 
     /**
-     * Change corner of map the compass starts at. 0: TopLeft, 1: TopRight, 2: BottomLeft, 3: BottomRight
+     * [`mapbox` (v10) implementation only] Adds compass offset, e.g. `{top: 8, left: 8}` will put the compass in top-left corner of the map
+     */
+    compassPosition: ornamentPositionPropType,
+
+    /**
+     * [`mapbox-gl` (v8) and `maplibre` implementation only] Change corner of map the compass starts at. 0: TopLeft, 1: TopRight, 2: BottomLeft, 3: BottomRight
      */
     compassViewPosition: PropTypes.number,
 
     /**
-     * Add margins to the compass with x and y values
+     * [`mapbox-gl` (v8) and `maplibre` implementation only] Add margins to the compass with x and y values
      */
     compassViewMargins: PropTypes.object,
+
+    /**
+     * [`mapbox` (v10) implementation only] Enable/Disable the scale bar from appearing on the map
+     */
+    scaleBarEnabled: PropTypes.bool,
+
+    /**
+     * [`mapbox` (v10) implementation only] Adds scale bar offset, e.g. `{top: 8, left: 8}` will put the scale bar in top-left corner of the map
+     */
+    scaleBarPosition: ornamentPositionPropType,
 
     /**
      * [Android only] Enable/Disable use of GLSurfaceView insted of TextureView.
@@ -179,6 +185,8 @@ class MapView extends NativeBridgeComponent(React.Component) {
     onLongPress: PropTypes.func,
 
     /**
+     * <v10 only
+     *
      * This event is triggered whenever the currently displayed map region is about to change.
      *
      * @param {PointFeature} feature - The geojson point feature at the camera center, properties contains zoomLevel, visibleBounds
@@ -186,6 +194,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
     onRegionWillChange: PropTypes.func,
 
     /**
+     *
      * This event is triggered whenever the currently displayed map region is changing.
      *
      * @param {PointFeature} feature - The geojson point feature at the camera center, properties contains zoomLevel, visibleBounds
@@ -193,11 +202,32 @@ class MapView extends NativeBridgeComponent(React.Component) {
     onRegionIsChanging: PropTypes.func,
 
     /**
-     * This event is triggered whenever the currently displayed map region finished changing
+     *
+     * This event is triggered whenever the currently displayed map region finished changing.
      *
      * @param {PointFeature} feature - The geojson point feature at the camera center, properties contains zoomLevel, visibleBounds
      */
     onRegionDidChange: PropTypes.func,
+
+    /**
+     * iOS, v10 only, experimental.
+     *
+     * Called when the currently displayed map area changes.
+     * Replaces onRegionIsChanging, so can't set both
+     *
+     * @param {MapState} region - A payload containing the map center, bounds, and other properties.
+     */
+    onCameraChanged: PropTypes.func,
+
+    /**
+     * iOS, v10 only, experimental
+     *
+     * Called when the currently displayed map area stops changing.
+     * Replaces onRegionDidChange, so can't set both
+     *
+     * @param {MapState} region - A payload containing the map center, bounds, and other properties.
+     */
+    onMapIdle: PropTypes.func,
 
     /**
      * This event is triggered when the map is about to start loading a new map style.
@@ -272,6 +302,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
     rotateEnabled: true,
     attributionEnabled: true,
     logoEnabled: true,
+    scaleBarEnabled: true,
     surfaceView: false,
     regionWillChangeDebounceTime: 10,
     regionDidChangeDebounceTime: 500,
@@ -324,57 +355,55 @@ class MapView extends NativeBridgeComponent(React.Component) {
   }
 
   _setHandledMapChangedEvents(props) {
-    if (isAndroid()) {
+    if (isAndroid() || MapboxGL.MapboxV10) {
       const events = [];
 
-      if (props.onRegionWillChange) {
-        events.push(MapboxGL.EventTypes.RegionWillChange);
-      }
-      if (props.onRegionIsChanging) {
-        events.push(MapboxGL.EventTypes.RegionIsChanging);
-      }
-      if (props.onRegionDidChange) {
-        events.push(MapboxGL.EventTypes.RegionDidChange);
-      }
-      if (props.onUserLocationUpdate) {
-        events.push(MapboxGL.EventTypes.UserLocationUpdated);
-      }
-      if (props.onWillStartLoadingMap) {
-        events.push(MapboxGL.EventTypes.WillStartLoadingMap);
-      }
-      if (props.onDidFinishLoadingMap) {
-        events.push(MapboxGL.EventTypes.DidFinishLoadingMap);
-      }
-      if (props.onDidFailLoadingMap) {
-        events.push(MapboxGL.EventTypes.DidFailLoadingMap);
-      }
-      if (props.onWillStartRenderingFrame) {
-        events.push(MapboxGL.EventTypes.WillStartRenderingFrame);
-      }
-      if (props.onDidFinishRenderingFrame) {
-        events.push(MapboxGL.EventTypes.DidFinishRenderingFrame);
-      }
-      if (props.onDidFinishRenderingFrameFully) {
-        events.push(MapboxGL.EventTypes.DidFinishRenderingFrameFully);
-      }
-      if (props.onWillStartRenderingMap) {
-        events.push(MapboxGL.EventTypes.WillStartRenderingMap);
-      }
-      if (props.onDidFinishRenderingMap) {
-        events.push(MapboxGL.EventTypes.DidFinishRenderingMap);
-      }
-      if (props.onDidFinishRenderingMapFully) {
-        events.push(MapboxGL.EventTypes.DidFinishRenderingMapFully);
-      }
-      if (props.onDidFinishLoadingStyle) {
-        events.push(MapboxGL.EventTypes.DidFinishLoadingStyle);
+      function addIfHasHandler(name) {
+        if (props[`on${name}`] != null) {
+          /* eslint-disable fp/no-mutating-methods */
+          if (MapboxGL.EventTypes[name] == null) {
+            console.warn(`rnmapbox maps: ${name} is not supported`);
+          } else {
+            events.push(MapboxGL.EventTypes[name]);
+            return true;
+          }
+        }
+        return false;
       }
 
-      this._runNativeCommand(
-        'setHandledMapChangedEvents',
-        this._nativeRef,
+      addIfHasHandler('RegionWillChange');
+      addIfHasHandler('RegionIsChanging');
+      addIfHasHandler('RegionDidChange');
+      addIfHasHandler('UserLocationUpdate');
+      addIfHasHandler('WillStartLoadingMap');
+      addIfHasHandler('DidFinishLoadingMap');
+      addIfHasHandler('DidFailLoadingMap');
+      addIfHasHandler('WillStartRenderingFrame');
+      addIfHasHandler('DidFinishRenderingFrame');
+      addIfHasHandler('DidFinishRenderingFrameFully');
+      addIfHasHandler('WillStartRenderingMap');
+      addIfHasHandler('DidFinishRenderingMap');
+      addIfHasHandler('DidFinishRenderingMapFully');
+      addIfHasHandler('DidFinishLoadingStyle');
+
+      if (addIfHasHandler('MapIdle')) {
+        if (props.onRegionDidChange) {
+          console.warn(
+            'rnmapbox/maps: only one of  MapView.onRegionDidChange or onMapIdle is supported',
+          );
+        }
+      }
+      if (addIfHasHandler('CameraChanged')) {
+        if (props.onRegionWillChange) {
+          console.warn(
+            'rnmapbox/maps: only one of MapView.onRegionWillChange or onCameraChanged is supported',
+          );
+        }
+      }
+
+      this._runNativeCommand('setHandledMapChangedEvents', this._nativeRef, [
         events,
-      );
+      ]);
     }
   }
 
@@ -597,7 +626,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
     }
 
     if (config.bounds && config.bounds.ne && config.bounds.sw) {
-      const {ne, sw, paddingLeft, paddingRight, paddingTop, paddingBottom} =
+      const { ne, sw, paddingLeft, paddingRight, paddingTop, paddingBottom } =
         config.bounds;
       stopConfig.bounds = toJSONString(makeLatLngBounds(ne, sw));
       stopConfig.boundsPaddingTop = paddingTop || 0;
@@ -625,20 +654,24 @@ class MapView extends NativeBridgeComponent(React.Component) {
     if (isFunction(this.props.onRegionWillChange)) {
       this.props.onRegionWillChange(payload);
     }
-    this.setState({isUserInteraction: payload.properties.isUserInteraction});
+    this.setState({
+      isUserInteraction: payload.properties.isUserInteraction,
+      isAnimatingFromUserInteraction:
+        payload.properties.isAnimatingFromUserInteraction,
+    });
   }
 
   _onRegionDidChange(payload) {
     if (isFunction(this.props.onRegionDidChange)) {
       this.props.onRegionDidChange(payload);
     }
-    this.setState({region: payload});
+    this.setState({ region: payload });
   }
 
   _onChange(e) {
-    const {regionWillChangeDebounceTime, regionDidChangeDebounceTime} =
+    const { regionWillChangeDebounceTime, regionDidChangeDebounceTime } =
       this.props;
-    const {type, payload} = e.nativeEvent;
+    const { type, payload } = e.nativeEvent;
     let propName = '';
 
     switch (type) {
@@ -658,6 +691,12 @@ class MapView extends NativeBridgeComponent(React.Component) {
         } else {
           propName = 'onRegionDidChange';
         }
+        break;
+      case MapboxGL.EventTypes.CameraChanged:
+        propName = 'onCameraChanged';
+        break;
+      case MapboxGL.EventTypes.MapIdle:
+        propName = 'onMapIdle';
         break;
       case MapboxGL.EventTypes.UserLocationUpdated:
         propName = 'onUserLocationUpdate';
@@ -785,7 +824,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
     this._setStyleURL(props);
 
     const callbacks = {
-      ref: nativeRef => this._setNativeRef(nativeRef),
+      ref: (nativeRef) => this._setNativeRef(nativeRef),
       onPress: this._onPress,
       onLongPress: this._onLongPress,
       onMapChange: this._onChange,
@@ -811,7 +850,8 @@ class MapView extends NativeBridgeComponent(React.Component) {
       <View
         onLayout={this._onLayout}
         style={this.props.style}
-        testID={mapView ? null : this.props.testID}>
+        testID={mapView ? null : this.props.testID}
+      >
         {mapView}
       </View>
     );
@@ -819,7 +859,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
 }
 
 const RCTMGLMapView = requireNativeComponent(NATIVE_MODULE_NAME, MapView, {
-  nativeOnly: {onMapChange: true, onAndroidCallback: true},
+  nativeOnly: { onMapChange: true, onAndroidCallback: true },
 });
 
 let RCTMGLAndroidTextureMapView;
@@ -828,7 +868,7 @@ if (isAndroid()) {
     ANDROID_TEXTURE_NATIVE_MODULE_NAME,
     MapView,
     {
-      nativeOnly: {onMapChange: true, onAndroidCallback: true},
+      nativeOnly: { onMapChange: true, onAndroidCallback: true },
     },
   );
 }

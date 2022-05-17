@@ -1,6 +1,6 @@
 # Customization:
 #  $RNMapboxMapsImpl - one of (maplibre, mapbox, mapbox-gl)
-#  $RNMapboxMapsVersion - version specification ("~> 10.4.0", "~> 5.9.0" or "exactVersion 5.12.1" mapblibre/SPM)
+#  $RNMapboxMapsVersion - version specification ("~> 10.4.3", "~> 5.9.0" or "exactVersion 5.12.1" mapblibre/SPM)
 #  $RNMapboxMapsSwiftPackageManager can be either
 #     "manual" - you're responsible for the Mapbox lib dependency either using cocoapods or SPM
 #     Hash - ```
@@ -13,13 +13,14 @@
 #           product_name: "Mapbox"
 #         }
 #         ```
+#  $RNMapboxMapsDownloadToken - *expo only* download token
 
 require 'json'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
 ## Warning: these lines are scanned by autogenerate.js
-rnMapboxMapsDefaultMapboxVersion = '~> 10.4.0'
+rnMapboxMapsDefaultMapboxVersion = '~> 10.5.0'
 rnMapboxMapsDefaultMapboxGLVersion = '~> 5.9.0'
 rnMapboxMapsDefaultMapLibreVersion = 'exactVersion 5.12.2'
 
@@ -194,6 +195,28 @@ def $RNMapboxMaps.pre_install(installer)
       puts "* [RNMBGL] Changed #{mobile_events_target.name} to #{mobile_events_target.send(:build_type)}"
       fail "* [RNMBGL] Unable to change build_type" unless mobile_events_target.send(:build_type) == Pod::BuildType.dynamic_framework
     end
+  end
+end
+
+## RNMapboxMapsDownloadToken
+# expo does not supports `.netrc`, so we need to patch curl commend used by cocoapods to pass the credentials
+
+if $RNMapboxMapsDownloadToken
+  module AddCredentialsToCurlWhenDownloadingMapbox
+    def curl!(*args)
+      mapbox_download = args.flatten.any? { |i| i.to_s.start_with?('https://api.mapbox.com') }
+      if mapbox_download
+        arguments = args.flatten
+        arguments.prepend("-u","mapbox:#{$RNMapboxMapsDownloadToken}")
+        super(*arguments)
+      else
+        super
+      end
+    end
+  end
+
+  class Pod::Downloader::Http
+    prepend AddCredentialsToCurlWhenDownloadingMapbox
   end
 end
 

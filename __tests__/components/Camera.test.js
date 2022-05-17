@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 
 import Camera from '../../javascript/components/Camera';
 
@@ -53,13 +53,13 @@ const cameraWithBounds = {
 describe('Camera', () => {
   describe('render', () => {
     test('renders correctly', () => {
-      const {getByTestId} = render(<Camera />);
+      const { getByTestId } = render(<Camera />);
 
       expect(getByTestId('Camera')).toBeDefined();
     });
 
     test('has proper default props', () => {
-      const {getByTestId} = render(<Camera />);
+      const { getByTestId } = render(<Camera />);
 
       expect(getByTestId('Camera').props).toStrictEqual({
         children: undefined,
@@ -200,7 +200,7 @@ describe('Camera', () => {
         expect(camera._setCamera).toHaveBeenCalledWith({
           animationDuration: 2000,
           animationMode: 'easeTo',
-          bounds: {ne: [-74.12641, 40.797968], sw: [-74.143727, 40.772177]},
+          bounds: { ne: [-74.12641, 40.797968], sw: [-74.143727, 40.772177] },
           heading: undefined,
           pitch: undefined,
           zoomLevel: undefined,
@@ -231,7 +231,7 @@ describe('Camera', () => {
 
       test('returns true if "hasDefaultPropsChanged"', () => {
         const testCases = [
-          [{heading: 120}, {heading: 121}],
+          [{ heading: 120 }, { heading: 121 }],
           [
             {
               centerCoordinate: [-111.8678, 40.2866],
@@ -281,32 +281,32 @@ describe('Camera', () => {
           ],
         ];
 
-        testCases.forEach(c => {
+        testCases.forEach((c) => {
           expect(camera._hasCameraChanged(c[0], c[1])).toBe(true);
         });
       });
 
       test('returns true if "hasFollowPropsChanged"', () => {
         const testCases = [
-          [{followUserLocation: false}, {followUserLocation: true}],
-          [{followUserMode: 'normal'}, {followUserMode: 'course'}],
-          [{followZoomLevel: 10}, {followZoomLevel: 13}],
-          [{followHeading: 100}, {followHeading: 110}],
-          [{followPitch: 40}, {followPitch: 49}],
+          [{ followUserLocation: false }, { followUserLocation: true }],
+          [{ followUserMode: 'normal' }, { followUserMode: 'course' }],
+          [{ followZoomLevel: 10 }, { followZoomLevel: 13 }],
+          [{ followHeading: 100 }, { followHeading: 110 }],
+          [{ followPitch: 40 }, { followPitch: 49 }],
         ];
 
-        testCases.forEach(c => {
+        testCases.forEach((c) => {
           expect(camera._hasCameraChanged(c[0], c[1])).toBe(true);
         });
       });
 
       test('returns true if "hasAnimationPropsChanged"', () => {
         const testCases = [
-          [{animationDuration: 3000}, {animationDuration: 1000}],
-          [{animationMode: 'flyTo'}, {animationMode: 'easeTo'}],
+          [{ animationDuration: 3000 }, { animationDuration: 1000 }],
+          [{ animationMode: 'flyTo' }, { animationMode: 'easeTo' }],
         ];
 
-        testCases.forEach(c => {
+        testCases.forEach((c) => {
           expect(camera._hasCameraChanged(c[0], c[1])).toBe(true);
         });
       });
@@ -942,6 +942,7 @@ describe('Camera', () => {
           defaultSettings: {
             centerCoordinate: [-111.8678, 40.2866],
             zoomLevel: 16,
+            animationMode: 'moveTo',
           },
         };
 
@@ -950,7 +951,7 @@ describe('Camera', () => {
             '{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-111.8678,40.2866]}}',
           duration: 0,
           heading: undefined,
-          mode: 'None',
+          mode: 'Move',
           pitch: undefined,
           zoom: 16,
           paddingBottom: 0,
@@ -969,6 +970,7 @@ describe('Camera', () => {
       const camera = new Camera();
       const configWithoutBounds = {
         animationDuration: 2000,
+        animationMode: 'easeTo',
         pitch: 45,
         heading: 110,
         zoomLevel: 9,
@@ -1025,7 +1027,7 @@ describe('Camera', () => {
         // with centerCoordinate
         expect(
           camera._createStopConfig(
-            {...configWithoutBounds, centerCoordinate: [-111.8678, 40.2866]},
+            { ...configWithoutBounds, centerCoordinate: [-111.8678, 40.2866] },
             true,
           ),
         ).toStrictEqual({
@@ -1065,7 +1067,7 @@ describe('Camera', () => {
         // with centerCoordinate
         expect(
           camera._createStopConfig(
-            {...configWithBounds, centerCoordinate: [-111.8678, 40.2866]},
+            { ...configWithBounds, centerCoordinate: [-111.8678, 40.2866] },
             true,
           ),
         ).toStrictEqual({
@@ -1091,14 +1093,14 @@ describe('Camera', () => {
 
       test('returns "Flight" for "flyTo"', () => {
         expect(
-          camera._getNativeCameraMode({animationMode: 'flyTo'}),
+          camera._getNativeCameraMode({ animationMode: 'flyTo' }),
         ).toStrictEqual('Flight');
       });
 
       test('returns "None" for "moveTo"', () => {
         expect(
-          camera._getNativeCameraMode({animationMode: 'moveTo'}),
-        ).toStrictEqual('None');
+          camera._getNativeCameraMode({ animationMode: 'moveTo' }),
+        ).toStrictEqual('Move');
       });
 
       test('returns "Ease" as default', () => {

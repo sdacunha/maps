@@ -19,13 +19,23 @@ class RCTMGLEvent : NSObject, RCTMGLEventProtocol {
     }
 
     enum EventType : String {
-      case tap = "press"
-      case regionDidChange = "regiondidchange"
-      case imageMissing = "imagesmissingimage"
-      case didFinishLoadingMap = "didfinishloadingmap"
-      case offlineProgress = "offlinestatus"
-      case offlineError = "offlineerror"
-      case offlineTileLimit = "offlinetileLimit"
+      case tap
+      case longPress
+      //case regionWillChange
+      case regionIsChanging
+      case regionDidChange
+      case cameraChanged
+      case mapIdle
+      case imageMissing
+      case didFinishLoadingMap
+      case didFinishRenderingFully
+      case didFinishRendering
+      case didFinishLoadingStyle
+      case offlineProgress
+      case offlineError
+      case offlineTileLimit
+      case vectorSourceLayerPress
+      case shapeSourceLayerPress
     }
     
     init(type: EventType, payload: [String:Any]?) {
@@ -34,4 +44,3 @@ class RCTMGLEvent : NSObject, RCTMGLEventProtocol {
     }
     
 }
-

@@ -1,11 +1,5 @@
 import MapboxMaps
 
-enum RCTMGLError: Error {
-  case parseError(String)
-  case failed(String)
-  case paramError(String)
-}
-
 @objc
 class RCTMGLTerrain : UIView, RCTMGLMapComponent, RCTMGLSourceConsumer {
   weak var map : RCTMGLMapView!
@@ -17,6 +11,10 @@ class RCTMGLTerrain : UIView, RCTMGLMapComponent, RCTMGLSourceConsumer {
   @objc var sourceID: String? = nil
   
   @objc var exaggeration : Any? = nil
+  
+  func waitForStyleLoad() -> Bool {
+    return true
+  }
 
   func makeTerrain() -> Terrain {
     print("=> sourceID \(sourceID)")

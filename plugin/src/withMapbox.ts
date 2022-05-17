@@ -1,4 +1,4 @@
-import {promises} from 'fs';
+import { promises } from 'fs';
 import path from 'path';
 
 import {
@@ -7,13 +7,17 @@ import {
   withDangerousMod,
   withXcodeProject,
   XcodeProject,
+  withGradleProperties,
+  WarningAggregator,
+  withProjectBuildGradle,
+  withAppBuildGradle,
 } from '@expo/config-plugins';
 import {
   mergeContents,
   removeGeneratedContents,
 } from '@expo/config-plugins/build/utils/generateCode';
 
-let pkg: {name: string; version?: string} = {
+let pkg: { name: string; version?: string } = {
   name: '@sdacunha/maps',
 };
 try {
@@ -24,6 +28,11 @@ try {
 
 type InstallerBlockName = 'pre' | 'post';
 
+export type MapboxPlugProps = {
+  RNMapboxMapsImpl?: string;
+  RNMapboxMapsDownloadToken?: string;
+};
+
 /**
  * Dangerously adds the custom installer hooks to the Podfile.
  * In the future this should be removed in favor of some custom hooks provided by Expo autolinking.
@@ -32,18 +41,23 @@ type InstallerBlockName = 'pre' | 'post';
  * @param config
  * @returns
  */
-const withCocoaPodsInstallerBlocks: ConfigPlugin = c => {
+const withCocoaPodsInstallerBlocks: ConfigPlugin<MapboxPlugProps> = (
+  c,
+  { RNMapboxMapsImpl, RNMapboxMapsDownloadToken },
+) => {
   return withDangerousMod(c, [
     'ios',
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    async config => {
+    async (config) => {
       const file = path.join(config.modRequest.platformProjectRoot, 'Podfile');
 
       const contents = await promises.readFile(file, 'utf8');
 
       await promises.writeFile(
         file,
-        applyCocoaPodsModifications(contents),
+        applyCocoaPodsModifications(contents, {
+          RNMapboxMapsImpl,
+          RNMapboxMapsDownloadToken,
+        }),
         'utf-8',
       );
       return config;
@@ -53,13 +67,51 @@ const withCocoaPodsInstallerBlocks: ConfigPlugin = c => {
 
 // Only the preinstaller block is required, the post installer block is
 // used for spm (swift package manager) which Expo doesn't currently support.
-export function applyCocoaPodsModifications(contents: string): string {
+export function applyCocoaPodsModifications(
+  contents: string,
+  { RNMapboxMapsImpl, RNMapboxMapsDownloadToken }: MapboxPlugProps,
+): string {
   // Ensure installer blocks exist
-  let src = addInstallerBlock(contents, 'pre');
+  let src = addConstantBlock(
+    contents,
+    RNMapboxMapsImpl,
+    RNMapboxMapsDownloadToken,
+  );
+  src = addInstallerBlock(src, 'pre');
   src = addInstallerBlock(src, 'post');
   src = addMapboxInstallerBlock(src, 'pre');
   src = addMapboxInstallerBlock(src, 'post');
   return src;
+}
+
+export function addConstantBlock(
+  src: string,
+  RNMapboxMapsImpl?: string,
+  RNMapboxMapsDownloadToken?: string,
+): string {
+  const tag = `@sdacunha/maps-rnmapboxmapsimpl`;
+
+  if (RNMapboxMapsImpl == null) {
+    const modified = removeGeneratedContents(src, tag);
+    if (!modified) {
+      return src;
+    } else {
+      return modified;
+    }
+  }
+
+  return mergeContents({
+    tag,
+    src,
+    newSrc: [
+      `$RNMapboxMapsImpl = '${RNMapboxMapsImpl}'`,
+      `$RNMapboxMapsDownloadToken = '${RNMapboxMapsDownloadToken}'`,
+    ].join('\n'),
+    anchor: /target .+ do/,
+    // We can't go after the use_react_native block because it might have parameters, causing it to be multi-line (see react-native template).
+    offset: 0,
+    comment: '#',
+  }).contents;
 }
 
 export function addInstallerBlock(
@@ -103,7 +155,7 @@ export function addMapboxInstallerBlock(
     tag: `@sdacunha/maps-${blockName}_installer`,
     src,
     newSrc: `    $RNMapboxMaps.${blockName}_install(installer)`,
-    anchor: new RegExp(`${blockName}_install do \\|installer\\|`),
+    anchor: new RegExp(`^\\s*${blockName}_install do \\|installer\\|`),
     offset: 1,
     comment: '#',
   }).contents;
@@ -117,7 +169,7 @@ export function setExcludedArchitectures(project: XcodeProject): XcodeProject {
   const configurations = project.pbxXCBuildConfigurationSection();
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  for (const {buildSettings} of Object.values(configurations || {})) {
+  for (const { buildSettings } of Object.values(configurations || {})) {
     // Guessing that this is the best way to emulate Xcode.
     // Using `project.addToBuildSettings` modifies too many targets.
     if (typeof buildSettings?.PRODUCT_NAME !== 'undefined') {
@@ -128,16 +180,188 @@ export function setExcludedArchitectures(project: XcodeProject): XcodeProject {
   return project;
 }
 
-const withExcludedSimulatorArchitectures: ConfigPlugin = c => {
-  return withXcodeProject(c, config => {
+const withExcludedSimulatorArchitectures: ConfigPlugin = (c) => {
+  return withXcodeProject(c, (config) => {
     config.modResults = setExcludedArchitectures(config.modResults);
     return config;
   });
 };
 
-const withMapbox: ConfigPlugin = config => {
+const withAndroidPropertiesDownloadToken: ConfigPlugin<MapboxPlugProps> = (
+  config,
+  { RNMapboxMapsDownloadToken },
+) => {
+  const key = 'MAPBOX_DOWNLOADS_TOKEN';
+  if (RNMapboxMapsDownloadToken) {
+    return withGradleProperties(config, (config) => {
+      config.modResults = config.modResults.filter((item) => {
+        if (item.type === 'property' && item.key === key) {
+          return false;
+        }
+        return true;
+      });
+      // eslint-disable-next-line fp/no-mutating-methods
+      config.modResults.push({
+        type: 'property',
+        key,
+        value: RNMapboxMapsDownloadToken,
+      });
+
+      return config;
+    });
+  } else {
+    return config;
+  }
+};
+
+const withAndroidPropertiesImpl2: ConfigPlugin<MapboxPlugProps> = (
+  config,
+  { RNMapboxMapsImpl },
+) => {
+  const key = 'expoRNMapboxMapsImpl';
+  if (RNMapboxMapsImpl) {
+    return withGradleProperties(config, (config) => {
+      config.modResults = config.modResults.filter((item) => {
+        if (item.type === 'property' && item.key === key) {
+          return false;
+        }
+        return true;
+      });
+      // eslint-disable-next-line fp/no-mutating-methods
+      config.modResults.push({
+        type: 'property',
+        key: key,
+        value: RNMapboxMapsImpl,
+      });
+
+      return config;
+    });
+  } else {
+    return config;
+  }
+};
+
+const withAndroidProperties: ConfigPlugin<MapboxPlugProps> = (
+  config,
+  { RNMapboxMapsImpl, RNMapboxMapsDownloadToken },
+) => {
+  config = withAndroidPropertiesDownloadToken(config, {
+    RNMapboxMapsDownloadToken,
+  });
+  config = withAndroidPropertiesImpl2(config, { RNMapboxMapsImpl });
+  return config;
+};
+
+const addLibCppFilter = (appBuildGradle: string): string => {
+  if (appBuildGradle.includes("pickFirst 'lib/x86/libc++_shared.so'"))
+    return appBuildGradle;
+  return mergeContents({
+    tag: `@sdacunha/maps-libcpp`,
+    src: appBuildGradle,
+    newSrc: `packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+    }`,
+    anchor: new RegExp(`^\\s*android\\s*{`),
+    offset: 1,
+    comment: '//',
+  }).contents;
+};
+
+const addMapboxMavenRepo = (projectBuildGradle: string): string => {
+  if (projectBuildGradle.includes('api.mapbox.com/downloads/v2/releases/maven'))
+    return projectBuildGradle;
+
+  /*
+  return projectBuildGradle.replace(
+    /repositories \s?{/,
+    `repositories {
+       maven {
+        url 'https://api.mapbox.com/downloads/v2/releases/maven'
+        authentication { basic(BasicAuthentication) }
+        credentials { 
+          username = 'mapbox'
+          password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
+        }
+       }
+  `,
+  );*/
+
+  return mergeContents({
+    tag: `@sdacunha/maps-v2-maven`,
+    src: projectBuildGradle,
+    newSrc: `maven {
+      url 'https://api.mapbox.com/downloads/v2/releases/maven'
+      authentication { basic(BasicAuthentication) }
+      credentials {
+        username = 'mapbox'
+        password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
+      }
+    }`,
+    anchor: new RegExp(`^\\s*allprojects\\s*{`), // TODO repositories { is needed as well
+    offset: 2,
+    comment: '//',
+  }).contents;
+};
+
+const withAndroidAppGradle: ConfigPlugin<MapboxPlugProps> = (config) => {
+  return withAppBuildGradle(config, ({ modResults, ...config }) => {
+    if (modResults.language !== 'groovy') {
+      WarningAggregator.addWarningAndroid(
+        'withMapbox',
+        `Cannot automatically configure app build.gradle if it's not groovy`,
+      );
+      return { modResults, ...config };
+    }
+
+    modResults.contents = addLibCppFilter(modResults.contents);
+    return { modResults, ...config };
+  });
+};
+
+const withAndroidProjectGradle: ConfigPlugin<MapboxPlugProps> = (config) => {
+  return withProjectBuildGradle(config, ({ modResults, ...config }) => {
+    if (modResults.language !== 'groovy') {
+      WarningAggregator.addWarningAndroid(
+        'withMapbox',
+        `Cannot automatically configure app build.gradle if it's not groovy`,
+      );
+      return { modResults, ...config };
+    }
+
+    modResults.contents = addMapboxMavenRepo(modResults.contents);
+    return { modResults, ...config };
+  });
+};
+
+const withMapboxAndroid: ConfigPlugin<MapboxPlugProps> = (
+  config,
+  { RNMapboxMapsImpl, RNMapboxMapsDownloadToken },
+) => {
+  config = withAndroidProperties(config, {
+    RNMapboxMapsImpl,
+    RNMapboxMapsDownloadToken,
+  });
+  config = withAndroidProjectGradle(config, { RNMapboxMapsImpl });
+  config = withAndroidAppGradle(config, { RNMapboxMapsImpl });
+  return config;
+};
+
+const withMapbox: ConfigPlugin<MapboxPlugProps> = (
+  config,
+  { RNMapboxMapsImpl, RNMapboxMapsDownloadToken },
+) => {
   config = withExcludedSimulatorArchitectures(config);
-  return withCocoaPodsInstallerBlocks(config);
+  config = withMapboxAndroid(config, {
+    RNMapboxMapsImpl,
+    RNMapboxMapsDownloadToken,
+  });
+  return withCocoaPodsInstallerBlocks(config, {
+    RNMapboxMapsImpl,
+    RNMapboxMapsDownloadToken,
+  });
 };
 
 export default createRunOncePlugin(withMapbox, pkg.name, pkg.version);

@@ -48,7 +48,7 @@ Read on if you want to edit your Mapbox version or flavor.
 
 Current default MapLibre version is `5.12.0`
 
-This is the dafult and requires no further setup`ios/Podfile`
+This is the default and requires no further setup`ios/Podfile`
 
 If you want to change the version used:
 
@@ -78,14 +78,14 @@ Check the current version of the SDK [here](https://docs.mapbox.com/ios/maps/ove
 
 ```ruby
 $RNMapboxMapsImpl = 'mapbox'
-$RNMapboxMapsVersion = '~> 10.3.0'
+$RNMapboxMapsVersion = '~> 10.5.0-beta1'
 ```
 
 You will need to authorize your download of the Maps SDK with a secret access token with the `DOWNLOADS:READ` scope. This [guide](https://docs.mapbox.com/ios/maps/guides/install/#configure-credentials) explains how to configure the secret token under section `Configure your secret token`.
 
 <br/>
 
-## Mapbox Maps GL SDK (9.0 or earlies)
+## Mapbox Maps GL SDK (9.0 or earlier)
 
 This is the old version of mapbox gl (deprecated)
 
